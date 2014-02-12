@@ -1,0 +1,38 @@
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "CompteRendu"
+%%% End: 
+
+\section{Déroulement de notre recherche}
+\label{sec:deroulement-de-notre}
+
+\subsection{Premiers pas avec Protégé}
+\label{sec:premiers-pas-avec}
+
+\par L'idée de modéliser les règles de Donjons et Dragons 3.5 avec une ontologie paraît brillante compte tenu des possibilités aperçues avec des exemples simples. L'application de règles (dans une ontologie) est la principale raison qui nous a fait choisir cette solution. Cependant, la première manipulation avec Protégé nous a fait croire en l'absence de ces options. Nous avons donc dans un premier temps utilisé l'ontologie comme un moyen de stockage évolué de connaissances. Les avantages n'ont pas paru évidents, malgré la possibilité de créer quelques concepts à partir d'autres concepts. L'utilisation de relations a fait évoluer notre estime du logiciel, elle nous a permis de stocker plus efficacement les concepts en leur associant des rôles.
+
+\subsection{Découverte de l'utilité de la ABox}
+\label{sec:deco-de-lutil}
+
+\par La TBox semblait jusqu'alors être le seul moyen de stocker des données pour pouvoir inférer dessus. L'approfondissement du cours de mathématiques nous a permis de bien cerner l'utilité des concepts à savoir de spécifier des propriétés générales pour un \emph{ensemble} d'éléments. Créer des sous-concepts alors que des instances du super-concept auraient été plus judicieuses est une erreur classique que nous avons sans cesse faite. Par exemple pour les dons, il n'est pas nécessaire de créer un concept par don puisqu'un don n'aura pas de modification spéciale pour chaque individu personnage qui y fait appel. En effet, un don n'est rien d'autre qu'une amélioration de quelques caractéristiques du personnage, il n'y sera associé aucune information choisie par le personnage comme des bonus par exemple.  Par contre une compétence contiendra des relations vers des bonus choisis par le personnage qui y fait appel. Pour chaque personnage on aura donc une instance de compétence qui servira également à stocker ces bonus. De même pour la force, la dextérité... Chaque personnage fera appel via une relation \emph{hasforce} à son instance personnelle de type Force, qui contiendra une relation vers le nombre correspondant à la force du personnage. On peut le voir comme un objet :
+\begin{tabbing}
+  Personnage \= $\rightarrow$ (hasForce)  instanceForce  \= $\rightarrow$ (hasValeurBase)  valeurDeBase \\
+  \> \> $\rightarrow$ (hasValeurTotale)  valeurTotale 
+  \end{tabbing}
+  
+  \begin{tabbing}
+    Personnage \= $\rightarrow$ (hasCompetence)  instanceCompetenceAcrobaties   \= $\rightarrow$  (hasDegreMaitrise)  degreMaitrise \kill
+ \> $\rightarrow$  (hasCompetence)  instanceCompetenceAcrobaties   \> $\rightarrow$  (hasDM)  degreMaitrise \\
+ \>  \> $\rightarrow$  (hasBonusTotal)  bonusTotal
+\end{tabbing}
+
+\subsection{La découverte et l'utilisation tardive des règles dans Protégé}
+\label{sec:la-decouverte-et}
+
+\par Le raisonnement décrit précédemment, avec les instances, n'aurait pas été possible sans la découverte de SWRL. En effet, c'est grâce à ce langage que nous pouvons écrire des règles qui \emph{agiront} sur l'ontologie selon une certaine manière. La principale motivation qui nous a fait découvrir ce formalisme est sans nul doute le fait de sommer des bonus selon une méthode bien définie.
+\par Le moteur d'inférence nous ayant fait défaut longtemps, avec le manque d'informations trouvées pour ce genre de problème, la solution s'est finalement dévoilée. L'utilisation du moteur Pellet a résolu le problème, prenant en compte les règles rédigées. La rédaction de ces règles nous a forcé à penser différemment, et donc à utiliser plus facilement des instances que des concepts. Alors que nous utilisions plus volontiers des relations de notre individu personnage vers des entiers pour la force par exemple, il est devenu plus évident de déclarer une instance pour la force, de créer une relation entre notre instance de personnage et cette instance, puis de les traiter avec les règles.
+\par Un concept nous apparaît donc désormais comme archétype donnant des propriétés à ses membres, ou bien récupérant des membres parce que leurs propriétés le leur permettent.
+
+
+

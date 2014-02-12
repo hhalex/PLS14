@@ -1,0 +1,98 @@
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "CompteRendu"
+%%% End:
+
+\section{Utilisation de Protégé}
+\label{sec:util-de-prot}
+
+\subsection{Les Classes}
+
+\par Protege est un logiciel aidant la construction d'ontologie.
+Protégé utilise 4 notions, les individus, les propriétés, les Classes et le règles.\\
+Les classes peuvent être nommée et explicite ou bien anonyme et sous-entendu.
+Il existe un outil utile à la construction de nombreuses Classes hiérarchisés: dans "edit" sélectionner "Create Class hierarchy". Lors de cette construction, si nous le savons, il est important de préciser si les classes sont disjoints, car si aucune mention n'est faite, protégé pourra envisager le cas contraire. On peut toujours préciser la disjonction des classes une à une ou ensemble de sous classes par ensembles de sous classes grace a l'outil"Make primitive siblings disjoint" dans edit. \textbf{On assimilera classes,concept et ensemble.} Car notre ontologie n'utilise que des relations acyclique, par conséquent il n'existe qu'une interprétation possible de la TBox. \footnote{cf 1er partie: Logique de description}
+
+\subsection{Les Propriétés}
+\par Lorsque nous définissons des propriétés nous pouvons également les hiérarchisé, par exemple hasCaracteristique force est une sous classe de hasCaracteristique. On peut également préciser quels propriétés sont inverse l'une de l'autre ainsi(si une propriété relie A à B, l'inverse relie B à A).\\\\
+
+Une propriété objet relie des classes, elle peut être:
+\begin{itemize}
+\item Functional: elle ne peut relier qu'un seul objet d'arrivé à l'objet de départ.\\
+  ex: \texttt{hasBirthMother}
+\item Inverse Functional: il ne peut y avoir qu'un seul objet de départ relier à un objet d'arrivé via cette propriété.\\
+  ex: \texttt{isBirthMotherOf}
+\item Transitive: si une propriété s'applique de l'objet A à l'objet B et de l'objet B à l'objet C alors elle s'applique de l'objet A à l'objet C. (une propriété ne peut pas être  functional et transitive).\\
+  ex: \texttt{hasAncestor}
+\item Symmetric: la propriété inverse est la propriété.\\
+  ex: \texttt{hasSibling}
+\item Asymmetric: la propriété ne peut pas être symétrique.\\
+  ex:\texttt{isChildOf}
+\item Reflexive: la propriété appliqué à un objet doit pouvoir relier l'objet à lui même.\\
+  ex: \texttt{knows}
+\item Irreflexive: ne peut pas relier l'objet à lui même.\\
+  ex: \texttt{isMotherOf}
+  
+\end{itemize}
+\par Nous pouvons aussi déterminer les domaines de départ et d'arriver pour ces propriétés, sous les nom respectif de domain pour l'ensemble de départ et range pour l'ensemble d'arrivé.
+\par Protégé permet également de définir des ensembles de manière implicite. Cela grâce aux relations des élément de cette Classe.
+ex: \texttt{hasParent some Elfe} ceci défini les Elfes, DemiElfe et tout hybride Elfe qu'on peut rencontrer.
+On appelle ces ensembles des restrictions. Il existe différent type de restriction, en voici 2:
+\begin{itemize}
+\item Existencial Restrictions : Ce sont des restrictions qui s'applique aux individus qui participe à au moins une relation de ce type.
+  ex:\texttt{hasParent some (au moins un) Elfe}
+\item Universal Restrictions: Ce sont des restrictions qui s'applique aux individus qui ne participe qu'à des relations de ce type, selon cette propriété.
+  
+  ex:\texttt{hasParent only (seulement) Elfe} 
+  Il ne peut avoir comme parent qu'un elfe, et pas d'autre type de parent.
+  
+\end{itemize}
+
+\par La Combinaison des deux permet de définir un Elfe qui a forcément des parents Elfes et seulement des parents Elfes. La restriction Universel n'est pas suffisante car si l'individu n'a pas de parent alors la 2ème condition est satisfaite et l'individu peut être un Elfe.
+\footnote{à priori un Elfe peut avoir entre 1 et une infinité de parent, car nous n'avons pas fixé de conditions sur la cardinalité de la relation hasParent}
+
+
+\subsection{Les règles}
+
+\par Les règles permettent de modifié les données de l'ontologie. Ce qui est très utile pour faire des calculs et des ajouts subtil d'information. Dans la version de Protégé 4.2 les règles s'écrivent en SWRL, comme dans la version 3.5 modulo quelque nuance. (On remplace \^ par des virgules , )
+
+\begin{verbatim}
+
+ex:\texttt{Thing(?x),hasBonusCaracteristiqueDexterite(?x, ?y),
+hasCaracteristiqueDexteriteBase(?x, ?z), add(?t, ?y, ?z)
+ -> hasCaracteristiqueDexteriteTotal(?x, ?t)}
+
+\end{verbatim}
+
+x représente un individu quelconque. 
+\\y la valeur numérique du bonus de Dextérité associé à l'individu x sous réserve d'existence de la relation hasBonusCaracteristiqueDexterite entre x et y. 
+\\z la valeur numérique de la Dextérité de Base associé à z sous réserve d'existence de la relation hasCaracteristiqueDexteriteBase entre x et z
+\\t est la somme de y et z
+\\Si les conditions requise sont satisfaite alors on associe la valeur numérique t à l'individu x via la relation hasCaracteristiqueDexteriteTotal
+
+\par Etant donnée les moteurs d'inférence actuellement développé il est important de vérifier régulièrement la cohérence des règle avec l'ontologie, sous peine de crash inexpliqué du moteur d'inférence. En procédant par étape, les crash permettent de localiser les erreurs.
+
+\subsection{Les Moteurs d'inférence}
+
+
+\par Il existe différent moteur d'inférence. Il y en a 2 compris dans le téléchargement de Protégé 4.2: Fact++ et HermiT. Cependant ils ne permettent pas d'inférer sur les règles écrites en SWRL. C'est à dire qu'il ne détecterons pas les incohérence des règles face au reste de l'ontologie et ne pourront pas non plus modifier celle-ci en suivant les règles écrite dans l'ontologie. Il pourront cependant détecter, signaler et expliquer les erreurs et incohérence du reste de la structure.
+
+Exemple:
+\begin{minipage}{0.9\textwidth}
+  
+  \par Nous avons divisé l'ensemble des compétence en deux ensembles disjoint: les compétences innée et les compétence non innée. Ainsi une classe défini comme sous-classes de compétences innée et compétences non innée entraine une incohérence. 
+  \par Cette incohérence nous est signalé en rouge par Protégé et l'explication nous ai donné également.
+\end{minipage}
+
+
+
+\par Pour modifier l'ontologie suivant nos règles écrite dans protégé, il faut utiliser le plugin \emph{pellet}. Il fonctionne si il n'y a pas d'erreurs et "meurs" ou fait planter protégé si il y en as. C'est pourquoi il vaut mieux l'utiliser après chaque ajout de règle. C'est une manière de détecter des incohérence même si elle n'est pas optimal. \\
+
+Exemple: 
+\begin{minipage}{0.9\textwidth}
+  
+  Nous avons crée un DemiOrque qui avait 4 en intelligence de base, or en temps que DemiOrc il subit un malus de -2 et passe à 2 en intelligence. Cependant nous avons écris une règle stipulant qu'un caractéristique de personnage doit être au moins égale à 3.
+  \\Protégé cesse de fonctionner lors de l'inférence. Il faut alors écrire ce type de cas particulier dans la règle pour que les règles ne se contredise pas.
+  
+\end{minipage}

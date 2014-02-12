@@ -1,0 +1,11 @@
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+
+\section{Introduction}
+
+\par De nos jours, l'utilisation d'une base de données pour stocker des informations est quasiment systématique. Pourtant d'autres moyens existent, avec d'autres avantages, et d'autres inconvénients bien sûr. Il s'agit donc de savoir si ces autres solutions correspondent à nos besoins, et si le compromis est intéressant.
+\par Notre objectif à court terme étant de stocker les règles du jeu de rôle Donjons \& Dragons décliné dans sa version 3.5, nous nous sommes par conséquent tournés vers une solution basée sur les logiques de description, autrement dit les ontologies. La caractéristique principale de ce système de stockage est de pouvoir y mettre des règles. C'est-à-dire qu'en plus des informations qu'on stockerait classiquement dans une base de données, on stocke des données qui les caractérisent. Typiquement, on utilise des relations pour définir les rapports que les objets ont entre eux. Le système de règles serait ainsi autonome et indépendant de l'interface potentielle basée dessus.
+\par Succinctement, le dessein est ainsi de stocker purement et simplement les règles du jeu choisi, sans les inclure au sein d'une interface qui en aurait l'usage (codée dans un langage particulier). Ceci rajoute une couche d'abstraction pour l'utilisation future de cette base de connaissances, permettant de réduire les coûts de maintenance pour les futurs projets se basant dessus, et rendant les règles plus facilement déployables et utilisables par un tiers.
