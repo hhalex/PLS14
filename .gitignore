@@ -1,0 +1,10 @@
+*.aux
+CompteRendu/auto
+CompteRendu/*.pdf
+*.log
+*.idx
+.#*
+*.toc
+*.synctex.gz
+*.fmt
+*_.tex
