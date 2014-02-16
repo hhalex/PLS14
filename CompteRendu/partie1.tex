@@ -1,11 +1,10 @@
+\section{Introduction}
+
+\par Le technologies d'aujourd'hui permettent de stocker toujours plus de données, pour des coûts raisonnables. Il y a encore quelques années, les volumes échangés étaient limités par la vitesse de transmission et la capacité de stockage des médias disponibles. Ces contraintes ayant été outrepassées, l'accumulation de données est désormais telle qu'il devient difficile de les utiliser telles quelles. \emph{Big Data} est le terme désignant cette masse conséquente, et englobe même tous les défis qui y sont liés, parmi lesquels l'analyse, la capture, le stockage...
+\par Un des défis est justement d'appliquer des algorithmes sur ces données, mais de manière intelligente. Il ne s'agit pas en effet de considérer un seul ordinateur pour effectuer des calculs aussi conséquents, mais plutôt de répartir le traitement en plusieurs sous taches assignées à plusieurs unités de calcul indépendantes. De cette manière, au lieu de se limiter à la puissance d'une seule unité, on considère l'ensemble des ressources disponibles sur le réseau.
+\par Des couches destinées à la gestion des ressources disponibles existent, et \emph{OAR} en fait partie. Elles permettent notamment de vérifier leur disponibilité, et d'y lancer des traitements. Notre but sera ainsi de fournir une surcouche permettant d'interagir avec les ressources disponibles sur le réseau à l'aide d'\emph{OAR} de manière transparente, et d'y lancer des taches pour traiter de gros fichiers de données. Cette surcouche sera en fait une interface graphique codée en JAVA, et sera suffisamment modulaire pour permettre de changer aisément l'algorithme de traitement des données. Pour le calcul distribué, le framework \emph{Hadoop} sera utilisé.
 
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: t
-%%% End:
-
-\section{Introduction}
-
-\par De nos jours, l'utilisation d'une base de données pour stocker des informations est quasiment systématique. Pourtant d'autres moyens existent, avec d'autres avantages, et d'autres inconvénients bien sûr. Il s'agit donc de savoir si ces autres solutions correspondent à nos besoins, et si le compromis est intéressant.
-\par Notre objectif à court terme étant de stocker les règles du jeu de rôle Donjons \& Dragons décliné dans sa version 3.5, nous nous sommes par conséquent tournés vers une solution basée sur les logiques de description, autrement dit les ontologies. La caractéristique principale de ce système de stockage est de pouvoir y mettre des règles. C'est-à-dire qu'en plus des informations qu'on stockerait classiquement dans une base de données, on stocke des données qui les caractérisent. Typiquement, on utilise des relations pour définir les rapports que les objets ont entre eux. Le système de règles serait ainsi autonome et indépendant de l'interface potentielle basée dessus.
-\par Succinctement, le dessein est ainsi de stocker purement et simplement les règles du jeu choisi, sans les inclure au sein d'une interface qui en aurait l'usage (codée dans un langage particulier). Ceci rajoute une couche d'abstraction pour l'utilisation future de cette base de connaissances, permettant de réduire les coûts de maintenance pour les futurs projets se basant dessus, et rendant les règles plus facilement déployables et utilisables par un tiers.
+%%% TeX-master: "CompteRendu"
+%%% End: 
