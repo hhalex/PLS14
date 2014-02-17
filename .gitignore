@@ -8,3 +8,7 @@ CompteRendu/*.pdf
 *.synctex.gz
 *.fmt
 *_.tex
+*.class
+GPATH
+GRTAGS
+GTAGS
