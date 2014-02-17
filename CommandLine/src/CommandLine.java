@@ -1,5 +1,10 @@
 import java.io.*;
 
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
+
 public class CommandLine {
 	public static void main(String args[]) {
 		try {
