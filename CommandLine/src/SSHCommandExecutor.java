@@ -11,7 +11,7 @@ public class SSHCommandExecutor {
 	public static void main(String[] args) {
 		String host="term2.grid.metz.supelec.fr";
 		String user="munozperez_jua";
-		String password="77036909";
+		String password=;
 		String command="oarsub nodes=4,walltime=00:10:00 -I";
 		String oarStatCommand="oarstat";
 		try{
