@@ -38,10 +38,10 @@ public class BoiteDialogueIdentification {
         jtf_machine = new JTextField("ghome.metz.supelec.fr");
 
         this.label_login = new JLabel("Login : ");
-        jtf_login = new JTextField("munozperez_jua");
+        jtf_login = new JTextField("");
 
         this.label_mdp = new JLabel("Password : ");
-        jtf_mdp = new JPasswordField("77036909");
+        jtf_mdp = new JPasswordField("");
 
         this.panel_machine = new JPanel();
         this.panel_login = new JPanel();
