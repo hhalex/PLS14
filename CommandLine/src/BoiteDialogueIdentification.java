@@ -6,7 +6,7 @@ import java.awt.event.*;
 public class BoiteDialogueIdentification {
 
     private JFrame frame;
-
+    
     private JPanel panel_machine;
     private JPanel panel_login;
     private JPanel panel_mdp;
