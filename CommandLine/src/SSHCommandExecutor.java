@@ -11,62 +11,92 @@ public class SSHCommandExecutor {
     String host;
     String user;
     String password;
-    
 
-    public void SSHCommandExecutor (String host, String user, String password) {
-	this.host = host;
-	this.user = user;
-	this.password = password;
-    }
 
-    public void name (args) {
-	
-    }
+    public SSHCommandExecutor (String host, String user, String password) {
 
-    public static void main(String[] args) {
-	String host="term2.grid.metz.supelec.fr";
-	String user="munozperez_jua";
-	String password="14071991";
-	String command="oarsub nodes=1,walltime=02:00:00 -I";
+        this.host = host;
+        this.user = user;
+        this.password = password;
 
-	try{
+        connectionSSH();
+    }   
 
-	    java.util.Properties config = new java.util.Properties(); 
-	    config.put("StrictHostKeyChecking", "no");
-	    JSch jsch = new JSch();
-	    Session session=jsch.getSession(user, host, 22);
-	    session.setPassword(password);
-	    session.setConfig(config);
-	    session.connect();
-	    System.out.println("Connected to " + session.getHost());
+    public void connectionSSH() {
 
-	    Channel channel=session.openChannel("exec");
-	    ((ChannelExec)channel).setCommand(command);
-	    channel.setInputStream(null);
-	    ((ChannelExec)channel).setErrStream(System.err);
+        JSch jsch = null;
 
-	    InputStream in=channel.getInputStream();
-	    channel.connect();
-	    byte[] tmp=new byte[1024];
-	    while(true){
-		while(in.available()>0){
-		    int i=in.read(tmp, 0, 1024);
-		    if(i<0)break;
-		    System.out.print(new String(tmp, 0, i));
-		    //e.printStackTrace();
-		}
-		if(channel.isClosed()){
-		    System.out.println("exit-status: "+channel.getExitStatus());
-		    break;
-		}
-		try{Thread.sleep(1000);}catch(Exception ee){}
-	    }
-	    channel.disconnect();
-	    session.disconnect();
-	    System.out.println("DONE");
-	}catch(Exception e){
-	    e.printStackTrace();
-	}
+        Session session_ghome = null;
+        Session session_term2 = null;
 
+        String command = "hostname";
+        //String command = "oarsub -l nodes=1,walltime=00:01:00 -I";
+        String host_term2 = "term2.grid.metz.supelec.fr";
+
+        try{
+
+            java.util.Properties config = new java.util.Properties(); 
+            config.put("StrictHostKeyChecking", "no");
+
+            jsch = new JSch();
+            session_ghome = jsch.getSession(user, host, 22);
+            session_ghome.setPassword(password);
+            session_ghome.setConfig(config);
+            session_ghome.connect();
+            System.out.println("Connecté à " + session_ghome.getHost() + " sous le port " + session_ghome.getPort());
+
+            // Réglages du port du serveur ghome afin de se connecter via à term2 via ce serveur
+            
+            int assinged_port = session_ghome.setPortForwardingL(0, host_term2, 22);
+
+            /*
+            Connection à la machine frontale term2 via le serveur ghome
+            Port de term2.grid.metz.supelec.fr : 59473
+             */
+
+            session_term2 = jsch.getSession(user, "127.0.0.1", assinged_port);
+            session_term2.setConfig(config);
+            session_term2.setPassword(password);
+            System.out.println("Connexion à " + host_term2 + " ...");
+            session_term2.connect();
+            System.out.println("Connecté à " + host_term2);
+
+            Channel channel = session_term2.openChannel("exec");
+            ( (ChannelExec) channel).setCommand(command);
+            channel.setInputStream(null);
+            ( (ChannelExec) channel).setErrStream(System.err);
+
+            System.out.println("Est-ce que le channel est connecté ? " + String.valueOf(channel.isConnected()));
+            
+            InputStream in = channel.getInputStream();
+            channel.connect();
+
+            byte[] tmp=new byte[1024];
+
+            while(true){
+                while(in.available()>0){
+                    int i=in.read(tmp, 0, 1024);
+                    if(i<0)break;
+                    System.out.print(new String(tmp, 0, i));
+                }
+                if(channel.isClosed()){
+                    System.out.println("exit-status: " + channel.getExitStatus());
+                    break;
+                }
+                try{Thread.sleep(1000);}catch(Exception ee){}
+            }
+
+            channel.disconnect();
+            session_term2.disconnect();
+            System.out.println("Déconnexion de " + host_term2 + " réussie");
+            session_ghome.disconnect();
+            System.out.println("Déconnexion de " + host + " réussie");
+            System.out.println("--------------------");
+
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.println("Votre identifiant ou mot de passe ou l'adresse de la MF est erroné");
+            System.out.println("--------------------");
+        }
     }
 }
