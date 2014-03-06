@@ -12,7 +12,6 @@ public class SSHCommandExecutor {
     String user;
     String password;
 
-
     public SSHCommandExecutor (String host, String user, String password) {
 
         this.host = host;
