@@ -1,5 +1,6 @@
 
-OARSubProcess.java
+
+// OARSubProcess.java
 /* 
  * ################################################################
  * 
@@ -30,7 +31,7 @@ OARSubProcess.java
  * 
  * ################################################################
  */ 
-package org.objectweb.proactive.core.process.oar;
+
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -41,6 +42,7 @@ import org.objectweb.proactive.core.process.ExternalProcess;
 import org.objectweb.proactive.core.process.JVMProcessImpl;
 import org.objectweb.proactive.core.process.MessageSink;
 import org.objectweb.proactive.core.process.UniversalProcess;
+import org.objectweb.proactive.core.process.AbstractExternalProcess.SimpleMessageSink;
 
 
 /**
@@ -65,14 +67,18 @@ import org.objectweb.proactive.core.process.UniversalProcess;
  * @version 1.0,  2004/09/20
  * @since   ProActive 2.0.1
  */
+
 public class OARSubProcess extends AbstractExternalProcessDecorator {
-    private static final String FILE_SEPARATOR = System.getProperty(
-            "file.separator");
+
+    //Liste des attributs d'un objet OARSubProcess
+
+    private static final String FILE_SEPARATOR = System.getProperty("file.separator");
+
     public final static String DEFAULT_OARSUBPATH = "/usr/local/bin/oarsub";
-    private static final String DEFAULT_SCRIPT_LOCATION = System.getProperty(
-            "user.home") + FILE_SEPARATOR + "ProActive" + FILE_SEPARATOR +
-        "scripts" + FILE_SEPARATOR + "unix" + FILE_SEPARATOR + "cluster" +
-        FILE_SEPARATOR + "oarStartRuntime.sh ";
+
+    private static final String DEFAULT_SCRIPT_LOCATION = System.getProperty("user.home") + FILE_SEPARATOR + "ProActive" + FILE_SEPARATOR +
+            "scripts" + FILE_SEPARATOR + "unix" + FILE_SEPARATOR + "cluster" + FILE_SEPARATOR + "oarStartRuntime.sh ";
+
     protected static final String DEFAULT_HOSTS_NUMBER = "1";
     protected String hostNumber = DEFAULT_HOSTS_NUMBER;
     protected String weight = "2";
@@ -82,25 +88,41 @@ public class OARSubProcess extends AbstractExternalProcessDecorator {
     protected String queueName;
     protected String accessProtocol = "rsh";
     protected String resources;
+    protected String command_path;
 
     //protected String properties;
+
+    /**
+     * Constructeur de la classe OARSubProcess.
+     * 
+     */
+
     public OARSubProcess() {
+        //Appel constructeur de la classe mère
         super();
         setCompositionType(GIVE_COMMAND_AS_PARAMETER);
+        //Initialisation de l'hôte et du chemin de la commande
         this.hostname = null;
         this.command_path = DEFAULT_OARSUBPATH;
     }
+
+    /**
+     * Constructeur de la classe OARSubProcess.
+     * 
+     */
 
     public OARSubProcess(ExternalProcess targetProcess) {
+        //Appel constructeur de la classe mère
         super(targetProcess);
+        //Initialisation de l'hôte et du chemin de la commande
         this.hostname = null;
         this.command_path = DEFAULT_OARSUBPATH;
     }
 
     //  ----------------------------------------------------------------------------------------
-    //-----------------------Extends AbstractExternalProcessDecorator-------------------------
+    //  -----------------------Extends AbstractExternalProcessDecorator-------------------------
     //  ----------------------------------------------------------------------------------------
-    
+
     public void setOutputMessageSink(MessageSink outputMessageSink) {
         if (outputMessageSink == null) {
             super.setOutputMessageSink(new SimpleMessageSink());
@@ -110,29 +132,34 @@ public class OARSubProcess extends AbstractExternalProcessDecorator {
     }
 
     /**
+     * Retourne l'id du job en cours.
      * @see org.objectweb.proactive.core.process.UniversalProcess#getProcessId()
      */
+
     public String getProcessId() {
-        return "oar_" + targetProcess.getProcessId();
+        return "oar_" + ((OARSubProcess) targetProcess).getProcessId();
     }
 
     /**
+     * Retourne les noms des noeuds du job en cours.
      * @see org.objectweb.proactive.core.process.UniversalProcess#getNodeNumber()
      */
-    public int getNodeNumber() {
-        if (hostNumber.equals("all")) {
-            return UniversalProcess.UNKNOWN_NODE_NUMBER;
-        }
 
+    public int getNodeNumber() {
+
+        //if (hostNumber.equals("all")) {
+        //    return UniversalProcess.UNKNOWN_NODE_NUMBER;
+        //}
         return (new Integer(hostNumber).intValue() * new Integer(weight).intValue());
     }
 
     /**
      * @see org.objectweb.proactive.core.process.UniversalProcess#getFinalProcess()
      */
+
     public UniversalProcess getFinalProcess() {
         checkStarted();
-        return targetProcess.getFinalProcess();
+        return ((OARSubProcess) targetProcess).getFinalProcess();
     }
 
     /**
@@ -151,6 +178,7 @@ public class OARSubProcess extends AbstractExternalProcessDecorator {
      * Two possibilities, rsh, ssh. Default is rsh.
      * @param accessProtocol
      */
+
     public void setAccessProtocol(String accessProtocol) {
         this.accessProtocol = accessProtocol;
     }
@@ -160,6 +188,7 @@ public class OARSubProcess extends AbstractExternalProcessDecorator {
      * Represents the -l option of OAR
      * @param res resources to set
      */
+
     public void setResources(String res) {
         checkStarted();
         if (res != null) {
@@ -173,6 +202,7 @@ public class OARSubProcess extends AbstractExternalProcessDecorator {
     //     * Not yet included in the oar command
     //     * @param hostList
     //     */
+    //
     //    public void setProperties(String props) {
     //        checkStarted();
     //        if (props != null) {
@@ -185,15 +215,17 @@ public class OARSubProcess extends AbstractExternalProcessDecorator {
      * Not yet included in the oar command
      * @param interactive true for -I option false otherwise
      */
+
     public void setInteractive(String interactive) {
         this.interactive = interactive;
     }
 
     /**
-     * Sets the value of the queue where the job will be launched. The default is 'normal'
-     * Not yet included in the oar command
+     * Sets the value of the queue where the job will be launched. The default is 'normal'.
+     * Not yet included in the oar command.
      * @param queueName
      */
+
     public void setQueueName(String queueName) {
         checkStarted();
         if (queueName == null) {
@@ -205,9 +237,9 @@ public class OARSubProcess extends AbstractExternalProcessDecorator {
     protected String parseHostname(String message) {
         //To be modified for OAR, does not work with the present code
         String result = new String();
-        if (logger.isDebugEnabled()) {
-            logger.debug("parseHostname() analyzing " + message);
-        }
+        //if (logger.isDebugEnabled()) {
+        //    logger.debug("parseHostname() analyzing " + message);
+        //}
         java.util.StringTokenizer st = new java.util.StringTokenizer(message);
         if (st.countTokens() < 2) {
             return null; //at least two tokens
@@ -226,12 +258,14 @@ public class OARSubProcess extends AbstractExternalProcessDecorator {
     //    protected String internalBuildCommand() {
     //        return buildEnvironmentCommand(); // + buildPSubCommand();
     //    }
+
     protected void internalStartProcess(String commandToExecute)
-        throws java.io.IOException {
+            throws java.io.IOException {
         ArrayList<String> al = new ArrayList<String>();
 
         //we divide the command into tokens
         //it's basically 3 blocks, the script path, the option and the rest
+
         Pattern p = Pattern.compile("(.*) .*(-c).*'(.*)'");
         Matcher m = p.matcher(command);
         if (!m.matches()) {
@@ -247,11 +281,11 @@ public class OARSubProcess extends AbstractExternalProcessDecorator {
         try {
             externalProcess = Runtime.getRuntime().exec(command);
             java.io.BufferedReader in = new java.io.BufferedReader(new java.io.InputStreamReader(
-                        externalProcess.getInputStream()));
+                    externalProcess.getInputStream()));
             java.io.BufferedReader err = new java.io.BufferedReader(new java.io.InputStreamReader(
-                        externalProcess.getErrorStream()));
+                    externalProcess.getErrorStream()));
             java.io.BufferedWriter out = new java.io.BufferedWriter(new java.io.OutputStreamWriter(
-                        externalProcess.getOutputStream()));
+                    externalProcess.getOutputStream()));
             handleProcess(in, out, err);
         } catch (java.io.IOException e) {
             isFinished = true;
@@ -265,11 +299,12 @@ public class OARSubProcess extends AbstractExternalProcessDecorator {
      * we thus rely on the following trick, the command has the form
      * echo "real command" | qsub -I ...   oarStartRuntime.sh
      */
+
     protected String internalBuildCommand() {
         StringBuilder oarsubCommand = new StringBuilder();
         oarsubCommand.append(
-            "/bin/sh -c  'echo for i in \\`cat \\$OAR_NODEFILE\\` \\; do " +
-            accessProtocol + " \\$i  ");
+                "/bin/sh -c  'echo for i in \\`cat \\$OAR_NODEFILE\\` \\; do " +
+                        accessProtocol + " \\$i  ");
         oarsubCommand.append(targetProcess.getCommand());
         oarsubCommand.append(" \\&  done  \\; wait > ");
         oarsubCommand.append(scriptLocation).append(" ; ");
@@ -283,10 +318,11 @@ public class OARSubProcess extends AbstractExternalProcessDecorator {
         //        if(properties != null){
         //            oarsubCommand.append("-p "+properties).append(" ");
         //        }
+
         oarsubCommand.append(scriptLocation).append(" '");
-        if (logger.isDebugEnabled()) {
-            logger.debug("oarsub command is " + oarsubCommand.toString());
-        }
+        //if (logger.isDebugEnabled()) {
+        //    logger.debug("oarsub command is " + oarsubCommand.toString());
+        //}
         return oarsubCommand.toString();
     }
 
@@ -307,7 +343,7 @@ public class OARSubProcess extends AbstractExternalProcessDecorator {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main (String[] args) {
         System.out.println("Testing OARSubProcess");
         JVMProcessImpl p = new JVMProcessImpl();
         OARSubProcess oar = new OARSubProcess(p);
