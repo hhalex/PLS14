@@ -6,7 +6,7 @@ import java.awt.event.*;
 public class InterfaceUtilisateur {
 
     private JFrame frame;
-    
+
     private JPanel panel_machine;
     private JPanel panel_login;
     private JPanel panel_mdp;
@@ -76,9 +76,25 @@ public class InterfaceUtilisateur {
         this.frame.setVisible(true);
 
         this.bouton_connect.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent eventBouton) {
                 System.out.println("Connexion à la machine frontale " + jtf_machine.getText() + " via l'utilisateur " + jtf_login.getText() + " ...");
-                SSHCommandExecutor ssh= new SSHCommandExecutor(jtf_machine.getText(), jtf_login.getText(), jtf_mdp.getText());
+                SSHConnexion ssh= new SSHConnexion(jtf_machine.getText(), jtf_login.getText(), jtf_mdp.getText());
+            }
+        });
+
+        /*
+         * Méthode à implémenter pour lancer la connexion lorsque l'on appuie sur la touche "Enter"
+         */
+
+        this.bouton_connect.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == KeyEvent.VK_ENTER) {
+                    System.out.println("Connexion à la machine frontale " + jtf_machine.getText() + " via l'utilisateur " + jtf_login.getText() + " ...");
+                    SSHConnexion ssh= new SSHConnexion(jtf_machine.getText(), jtf_login.getText(), jtf_mdp.getText());
+                }
             }
         });
 
@@ -90,7 +106,7 @@ public class InterfaceUtilisateur {
                  * channel.disconnect();
                  * session_term2.disconnect();
                  * session_ghome.disconnect();
-                */
+                 */
             }
         });
     }
