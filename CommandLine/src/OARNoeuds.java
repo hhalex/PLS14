@@ -1,153 +1,136 @@
-import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.GroupLayout.Group;
-import javax.swing.GroupLayout.ParallelGroup;
-import javax.swing.GroupLayout.SequentialGroup;
-
 import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+
 import java.awt.GridLayout;
-import java.awt.event.*;
 
-public class OARNoeuds {
+import javax.swing.JTextField;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
-    private JButton soummettre_job;
-
-    private JLabel nb_noeuds_jlabel;
-    private JTextField nb_noeuds_jtf;
-
-    private JLabel tp_alloc_jlabel;
-    private JTextField temps_allocation_jtf;
-
-    private JScrollPane scrollVisualisation;
-
-    private JSeparator jSeparator1;
-    private JSeparator jSeparator2;
-    private JSeparator jSeparator3;
-
-    private JTextArea visualisation_noeuds;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
-    public OARNoeuds() {
-        initComponents();
+public class OARNoeuds extends JFrame {
+
+    private JPanel contentPane;
+    private JTextField jtf_nbNoeuds;
+    private JTextField jtf_tpsAllocation;
+
+    /**
+     * Launch the application.
+     */
+
+    public void lancementFenetre () {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    OARNoeuds frame = new OARNoeuds();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
-    private void initComponents() {
+    /**
+     * Create the frame.
+     */
 
-        jSeparator1 = new JSeparator();
-        jSeparator3 = new JSeparator();
-        jSeparator2 = new JSeparator();
+    public OARNoeuds() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setBounds(100, 100, 450, 300);
+        setSize(450,200);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(new GridLayout(1, 0, 0, 0));
 
-        nb_noeuds_jlabel = new JLabel();
-        nb_noeuds_jtf = new JTextField();
+        JPanel bouton_allouer = new JPanel();
+        contentPane.add(bouton_allouer);
 
-        tp_alloc_jlabel = new JLabel();
-        temps_allocation_jtf = new JTextField();
+        JLabel nb_noeuds = new JLabel("Nombre noeuds :");
 
-        scrollVisualisation = new JScrollPane();
+        JLabel tps_allocation = new JLabel("Temps d'allocation (en min) :");
 
-        visualisation_noeuds = new JTextArea();
+        jtf_nbNoeuds = new JTextField();
+        jtf_nbNoeuds.setColumns(10);
 
-        soummettre_job = new JButton();
+        jtf_tpsAllocation = new JTextField();
+        jtf_tpsAllocation.setColumns(10);
 
-        nb_noeuds_jlabel.setText("Nombre de noeuds :");
-        //nb_noeuds_jlabel.setToolTipText("");
+        JButton btn_Allouer = new JButton("Allouer");
 
-        /*temps_allocation_jtf.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                temps_allocation_jtfActionPerformed(evt);
-            }
-        });*/
+        /*
+         * Lance la méthode oarsub lorsqu'on appuie la touche "Enter"
+         */
 
-        tp_alloc_jlabel.setText("Temps d'allocation (en min) :");
-
-        // Création de la fenêtre contenant la liste des noeuds alloués
-        visualisation_noeuds.setColumns(20);
-        visualisation_noeuds.setRows(5);
-
-        scrollVisualisation.setViewportView(visualisation_noeuds);
-
-        soummettre_job.setText("Soummettre JOB");
-        soummettre_job.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                soummettre_jobActionPerformed(evt);
+        btn_Allouer.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == KeyEvent.VK_ENTER) {
+                    //Lancer le oarsub
+                }
             }
         });
 
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                        .addGap(25, 25, 25)
-                                        .addGroup(layout.createParallelGroup(Alignment.LEADING, false)
-                                                .addComponent(jSeparator1)
-                                                .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(nb_noeuds_jlabel)
-                                                        .addGap(73, 73, 73)
-                                                        .addComponent(nb_noeuds_jtf, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
-                                                        .addComponent(jSeparator3)
-                                                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                                .addComponent(tp_alloc_jlabel)
-                                                                .addGap(18, 18, 18)
-                                                                .addComponent(temps_allocation_jtf, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
-                                                                .addComponent(scrollVisualisation)))
-                                                                .addGroup(layout.createSequentialGroup()
-                                                                        .addGap(85, 85, 85)
-                                                                        .addComponent(soummettre_job)))
-                                                                        .addContainerGap(25, Short.MAX_VALUE))
-                );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(nb_noeuds_jlabel)
-                                .addComponent(nb_noeuds_jtf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                .addGap(5, 5, 5)
-                                .addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addGap(3, 3, 3)
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(tp_alloc_jlabel)
-                                        .addComponent(temps_allocation_jtf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                        .addGap(5, 5, 5)
-                                        .addComponent(jSeparator3, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
-                                        .addGap(4, 4, 4)
-                                        .addComponent(soummettre_job)
-                                        .addGap(5, 5, 5)
-                                        .addComponent(scrollVisualisation, GroupLayout.PREFERRED_SIZE, 168, GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap(25, Short.MAX_VALUE))
-                );
+        /*
+         * Lance la méthode oarsub lorsque l'on click sur le bouton "Allouer"
+         */
 
-        pack();
-    }// </editor-fold>                        
-
-    private void soummettre_jobActionPerformed(ActionEvent evt) {                                         
-        // TODO add your handling code here:
-    }                                        
-
-    public static void main(String args[]) {
-
-        try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+        btn_Allouer.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                //Lancer le oarsub
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(OARNoeuds.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(OARNoeuds.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(OARNoeuds.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(OARNoeuds.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        OARNoeuds noeuds = new OARNoeuds();
-
-        }
-    }                  
+        });
+        GroupLayout gl_bouton_allouer = new GroupLayout(bouton_allouer);
+        gl_bouton_allouer.setHorizontalGroup(
+                gl_bouton_allouer.createParallelGroup(Alignment.LEADING)
+                .addGroup(gl_bouton_allouer.createSequentialGroup()
+                        .addGroup(gl_bouton_allouer.createParallelGroup(Alignment.LEADING)
+                                .addGroup(gl_bouton_allouer.createSequentialGroup()
+                                        .addGap(31)
+                                        .addGroup(gl_bouton_allouer.createParallelGroup(Alignment.TRAILING)
+                                                .addGroup(gl_bouton_allouer.createSequentialGroup()
+                                                        .addComponent(nb_noeuds)
+                                                        .addGap(92))
+                                                        .addGroup(gl_bouton_allouer.createSequentialGroup()
+                                                                .addComponent(tps_allocation)
+                                                                .addGap(18)))
+                                                                .addGroup(gl_bouton_allouer.createParallelGroup(Alignment.LEADING)
+                                                                        .addComponent(jtf_nbNoeuds, GroupLayout.PREFERRED_SIZE, 168, GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jtf_tpsAllocation, GroupLayout.PREFERRED_SIZE, 168, GroupLayout.PREFERRED_SIZE)))
+                                                                        .addGroup(gl_bouton_allouer.createSequentialGroup()
+                                                                                .addGap(175)
+                                                                                .addComponent(btn_Allouer)))
+                                                                                .addContainerGap(41, Short.MAX_VALUE))
+                );
+        gl_bouton_allouer.setVerticalGroup(
+                gl_bouton_allouer.createParallelGroup(Alignment.TRAILING)
+                .addGroup(gl_bouton_allouer.createSequentialGroup()
+                        .addGap(32)
+                        .addGroup(gl_bouton_allouer.createParallelGroup(Alignment.BASELINE)
+                                .addComponent(nb_noeuds)
+                                .addComponent(jtf_nbNoeuds, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(ComponentPlacement.UNRELATED)
+                                .addGroup(gl_bouton_allouer.createParallelGroup(Alignment.BASELINE)
+                                        .addComponent(jtf_tpsAllocation, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(tps_allocation))
+                                        .addPreferredGap(ComponentPlacement.UNRELATED)
+                                        .addComponent(btn_Allouer)
+                                        .addGap(27))
+                );
+        bouton_allouer.setLayout(gl_bouton_allouer);
+    }
+}
