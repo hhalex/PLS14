@@ -30,7 +30,7 @@ public class SSHConnexion {
 
         Session session_ghome = null;
         Session session_term2 = null;
-        Session session_cluster = null;
+        //Session session_cluster = null;
 
         //String cat = "cat $OAR_NODE_FILE";
         String command = "hostname";
@@ -85,19 +85,23 @@ public class SSHConnexion {
 
             session_final = session_term2;
 
-            System.out.println("Est-ce que sesseion_final est connectée ? " + String.valueOf(session_final.isConnected()));
+            //System.out.println("Est-ce que sesseion_final est connectée ? " + String.valueOf(session_final.isConnected()));
 
-            //lancementFenetre();
-
-            System.out.println("Est-ce que sesseion_ghome est connectée ? " + String.valueOf(session_ghome.isConnected()));
-            System.out.println("Est-ce que sesseion_term2 est connectée ? " + String.valueOf(session_term2.isConnected()));
+            //System.out.println("Est-ce que sesseion_ghome est connectée ? " + String.valueOf(session_ghome.isConnected()));
+            //System.out.println("Est-ce que sesseion_term2 est connectée ? " + String.valueOf(session_term2.isConnected()));
             //System.out.println(String.valueOf(session_cluster.isConnected()));
 
             //executerCommande(command);
             //executerCommande(cat);
 
-            System.out.println("Est-ce que sesseion_ghome est connectée ? " + String.valueOf(session_ghome.isConnected()));
-            System.out.println("Est-ce que sesseion_term2 est connectée ? " + String.valueOf(session_term2.isConnected()));
+            //System.out.println("Est-ce que sesseion_ghome est connectée ? " + String.valueOf(session_ghome.isConnected()));
+            //System.out.println("Est-ce que sesseion_term2 est connectée ? " + String.valueOf(session_term2.isConnected()));
+
+            if(session_final.isConnected()) {
+                OARNoeuds noeuds = new OARNoeuds();   
+                InterfaceUtilisateur.closeGUI();
+            }
+
 
             /*
             Channel channel = session_term2.openChannel("exec");
@@ -157,7 +161,7 @@ public class SSHConnexion {
         }
     }
 
-    private void executerCommande(String cmd) throws Exception {
+    private static void executerCommande(String cmd) throws Exception {
 
         Channel channel = SSHConnexion.session_final.openChannel("exec");
         ( (ChannelExec) channel).setCommand(cmd);
@@ -198,7 +202,7 @@ public class SSHConnexion {
          */
     }
 
-    private void terminalPrintState(InputStream in) throws IOException, InterruptedException {
+    private static void terminalPrintState(InputStream in) throws IOException, InterruptedException {
 
         byte[] tmp=new byte[1024];
 
@@ -218,4 +222,42 @@ public class SSHConnexion {
             try{Thread.sleep(1000);}catch(Exception ee){}
         }
     }
+
+    public static Session getSession() {
+        return session_final;
+    }
+
+    public static void commandeOARSUB(int nbNoeuds, int tpsAllocation) throws Exception {
+
+        String command = null;
+        command = "oarsub -l nodes=" + nbNoeuds + ",walltime=" + getTemps(tpsAllocation) + " -I";
+        executerCommande(command);
+    }
+
+    public static String getTemps(int tps) {
+
+        String temps = null;
+        if(tps<=59){
+            temps = "00:" + tps + ":00";
+        } 
+        if(tps==60){
+            temps = "01:00:00";
+        }
+        if(tps>60 && tps<119){
+            int tpsIntermediaire = tps - 60;
+            temps = "01:" + tpsIntermediaire + ":00";
+        }
+        if(tps==120){
+            temps = "02:00:00";
+        }
+        if(tps>121 && tps<179){
+            int tpsIntermediaire = tps - 60;
+            temps = "02:" + tpsIntermediaire + ":00";
+        }
+        if(tps==180){
+            temps = "03:00:00";
+        }else{System.out.println("Veuillez saisir un temps d'allocation inférieur à 3 heures. Merci.");}
+        return temps;
+    }
+
 }
