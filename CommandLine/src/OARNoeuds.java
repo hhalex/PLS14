@@ -29,7 +29,7 @@ public class OARNoeuds extends JFrame {
      * Launch the application.
      */
 
-    public void lancementFenetre () {
+    public static void lancementFenetre () {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -47,6 +47,7 @@ public class OARNoeuds extends JFrame {
      */
 
     public OARNoeuds() {
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //setBounds(100, 100, 450, 300);
         setSize(450,200);
