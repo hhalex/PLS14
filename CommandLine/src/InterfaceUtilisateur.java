@@ -5,7 +5,7 @@ import java.awt.event.*;
 
 public class InterfaceUtilisateur {
 
-    private JFrame frame;
+    static JFrame frame;
 
     private JPanel panel_machine;
     private JPanel panel_login;
@@ -26,10 +26,10 @@ public class InterfaceUtilisateur {
 
     public InterfaceUtilisateur() {
 
-        this.frame = new JFrame("Connexion MF Supélec");
-        this.frame.setSize(350,130);
-        this.frame.setVisible(true);
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame = new JFrame("Connexion MF Supélec");
+        frame.setSize(350,130);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         bouton_connect = new JButton ("Connexion");
         bouton_disconnect = new JButton ("Déconnexion");
@@ -38,7 +38,7 @@ public class InterfaceUtilisateur {
         jtf_machine = new JTextField("ghome.metz.supelec.fr");
 
         this.label_login = new JLabel("Login : ");
-        jtf_login = new JTextField("");
+        jtf_login = new JTextField("munozperez_jua");
 
         this.label_mdp = new JLabel("Password : ");
         jtf_mdp = new JPasswordField("");
@@ -72,8 +72,8 @@ public class InterfaceUtilisateur {
         panelGlobal.add(panel_mdp);
         panelGlobal.add(panel_bouton);
 
-        this.frame.setContentPane(panelGlobal);               
-        this.frame.setVisible(true);
+        frame.setContentPane(panelGlobal);               
+        frame.setVisible(true);
 
         this.bouton_connect.addActionListener(new ActionListener() {
             @Override
@@ -110,6 +110,12 @@ public class InterfaceUtilisateur {
             }
         });
     }
+
+    /*
+    public void fermerBoite() {
+        frame.setVisible(false);
+    }
+     */
 
     public static void main (String args[]) {
 
