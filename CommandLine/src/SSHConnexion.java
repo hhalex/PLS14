@@ -33,8 +33,8 @@ public class SSHConnexion {
         Session session_cluster = null;
 
         //String cat = "cat $OAR_NODE_FILE";
-        //String command = "hostname";
-        String command = "oarsub -l nodes=1,walltime=00:01:00 -I";
+        String command = "hostname";
+        //String command = "oarsub -l nodes=1,walltime=00:01:00 -I";
         String host_term2 = "term2.grid.metz.supelec.fr";
         //String host_cluster = "sh15.grid.metz.supelec.fr";
 
@@ -85,11 +85,15 @@ public class SSHConnexion {
 
             session_final = session_term2;
 
+            System.out.println("Est-ce que sesseion_final est connectée ? " + String.valueOf(session_final.isConnected()));
+
+            //lancementFenetre();
+
             System.out.println("Est-ce que sesseion_ghome est connectée ? " + String.valueOf(session_ghome.isConnected()));
             System.out.println("Est-ce que sesseion_term2 est connectée ? " + String.valueOf(session_term2.isConnected()));
             //System.out.println(String.valueOf(session_cluster.isConnected()));
 
-            executerCommande(command);
+            //executerCommande(command);
             //executerCommande(cat);
 
             System.out.println("Est-ce que sesseion_ghome est connectée ? " + String.valueOf(session_ghome.isConnected()));
@@ -121,7 +125,7 @@ public class SSHConnexion {
                 System.out.print(new String(tmp, 0, i));
             }
             if(channel.isClosed()){
-                // System.out.println("exit-status: " + channel.getExitStatus());
+                System.out.println("exit-status: " + channel.getExitStatus());
                 break;
             }
             try{Thread.sleep(1000);}catch(Exception ee){}
@@ -150,7 +154,8 @@ public class SSHConnexion {
              * 
              */
 
-        }}
+        }
+    }
 
     private void executerCommande(String cmd) throws Exception {
 
@@ -171,7 +176,7 @@ public class SSHConnexion {
         System.out.println("Est-ce que le canal est actif ? " + String.valueOf(channel.isConnected()));
 
         terminalPrintState(in);
-        
+
         System.out.println(String.valueOf(channel.isClosed()));
         System.out.println("Processus terminé");
 
