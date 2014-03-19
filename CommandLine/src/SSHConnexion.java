@@ -1,8 +1,11 @@
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.ChannelShell;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
@@ -33,7 +36,7 @@ public class SSHConnexion {
         Session session_cluster = null;
 
         //String cat = "cat $OAR_NODE_FILE";
-        String command = "hostname";
+        String command = "ls -l";
         //String command = "oarsub -l nodes=1,walltime=00:01:00 -I";
         String host_term2 = "term2.grid.metz.supelec.fr";
         //String host_cluster = "sh15.grid.metz.supelec.fr";
@@ -99,15 +102,44 @@ public class SSHConnexion {
             System.out.println("Est-ce que sesseion_ghome est connectée ? " + String.valueOf(session_ghome.isConnected()));
             System.out.println("Est-ce que sesseion_term2 est connectée ? " + String.valueOf(session_term2.isConnected()));
 
-            /*
-            Channel channel = session_term2.openChannel("exec");
-            ( (ChannelExec) channel).setCommand(command);
-            channel.setInputStream(null);
-            ( (ChannelExec) channel).setErrStream(System.err);
+            
+            Channel channel = session_term2.openChannel("shell");
+	    
+	    
+	    InputStream in = channel.getInputStream();
+	    OutputStream out = channel.getOutputStream();
 
-            InputStream in = channel.getInputStream();
-            channel.connect();
-             */
+	    ((ChannelShell)channel).setPtyType("vt102");
+	    channel.connect();
+
+	    byte[] tmp=new byte[1024];
+
+	    out.write((command + ";hostname").getBytes());
+	    out.write(("\n").getBytes());
+	    out.flush();
+
+	    while (true) {  
+
+		while (in.available() > 0) {
+		    int i = in.read(tmp, 0, 1024);
+		    if (i < 0) {
+			//System.out.println("[debug] breaking at i < 0");
+			break;
+		    }
+		    String buffer = new String(tmp, 0, i);
+		    System.out.println( buffer);
+		    if(buffer.contains("REMOTE JSH COMMAND FINISHED")){
+			System.out.println("[debug] breaking at finished");
+			break;
+		    }
+		}
+		if (channel.isClosed()) {
+		    //System.out.println("[debug] breaking at isClosed");
+		    in.close();
+		    break;
+		}
+	    }
+
             //}
 
             /*
@@ -115,22 +147,20 @@ public class SSHConnexion {
              * Implémenter espace où l'utilisateur suit l'évolution de la connexion
              */
 
-            /*
-        byte[] tmp=new byte[1024];
-
-        while(true){
-            while(in.available()>0){
-                int i=in.read(tmp, 0, 1024);
-                if(i<0)break;
-                System.out.print(new String(tmp, 0, i));
-            }
-            if(channel.isClosed()){
-                System.out.println("exit-status: " + channel.getExitStatus());
-                break;
-            }
-            try{Thread.sleep(1000);}catch(Exception ee){}
-        }
-             */
+        //byte[] tmp=new byte[1024];
+	//
+        //while(true){
+        //    while(in.available()>0){
+        //        int i=in.read(tmp, 0, 1024);
+        //        if(i<0)break;
+        //        System.out.print(new String(tmp, 0, i));
+        //    }
+        //    if(channel.isClosed()){
+        //        System.out.println("exit-status: " + channel.getExitStatus());
+        //        break;
+        //    }
+        //    try{Thread.sleep(1000);}catch(Exception ee){}
+        //}
 
             /*
             channel.disconnect();

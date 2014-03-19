@@ -33,16 +33,16 @@
  */ 
 
 
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+// import java.util.ArrayList;
+// import java.util.regex.Matcher;
+// import java.util.regex.Pattern;
 
-import org.objectweb.proactive.core.process.AbstractExternalProcessDecorator;
-import org.objectweb.proactive.core.process.ExternalProcess;
-import org.objectweb.proactive.core.process.JVMProcessImpl;
-import org.objectweb.proactive.core.process.MessageSink;
-import org.objectweb.proactive.core.process.UniversalProcess;
-import org.objectweb.proactive.core.process.AbstractExternalProcess.SimpleMessageSink;
+// import org.objectweb.proactive.core.process.AbstractExternalProcessDecorator;
+// import org.objectweb.proactive.core.process.ExternalProcess;
+// import org.objectweb.proactive.core.process.JVMProcessImpl;
+// import org.objectweb.proactive.core.process.MessageSink;
+// import org.objectweb.proactive.core.process.UniversalProcess;
+// import org.objectweb.proactive.core.process.AbstractExternalProcess.SimpleMessageSink;
 
 
 /**
@@ -68,286 +68,286 @@ import org.objectweb.proactive.core.process.AbstractExternalProcess.SimpleMessag
  * @since   ProActive 2.0.1
  */
 
-public class OARSubProcess extends AbstractExternalProcessDecorator {
+// public class OARSubProcess extends AbstractExternalProcessDecorator {
 
-    //Liste des attributs d'un objet OARSubProcess
+//     //Liste des attributs d'un objet OARSubProcess
 
-    private static final String FILE_SEPARATOR = System.getProperty("file.separator");
+//     private static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
-    public final static String DEFAULT_OARSUBPATH = "/usr/local/bin/oarsub";
+//     public final static String DEFAULT_OARSUBPATH = "/usr/local/bin/oarsub";
 
-    private static final String DEFAULT_SCRIPT_LOCATION = System.getProperty("user.home") + FILE_SEPARATOR + "ProActive" + FILE_SEPARATOR +
-            "scripts" + FILE_SEPARATOR + "unix" + FILE_SEPARATOR + "cluster" + FILE_SEPARATOR + "oarStartRuntime.sh ";
+//     private static final String DEFAULT_SCRIPT_LOCATION = System.getProperty("user.home") + FILE_SEPARATOR + "ProActive" + FILE_SEPARATOR +
+//             "scripts" + FILE_SEPARATOR + "unix" + FILE_SEPARATOR + "cluster" + FILE_SEPARATOR + "oarStartRuntime.sh ";
 
-    protected static final String DEFAULT_HOSTS_NUMBER = "1";
-    protected String hostNumber = DEFAULT_HOSTS_NUMBER;
-    protected String weight = "2";
-    protected String scriptLocation = DEFAULT_SCRIPT_LOCATION;
-    protected String interactive = "false";
-    protected int jobID;
-    protected String queueName;
-    protected String accessProtocol = "rsh";
-    protected String resources;
-    protected String command_path;
+//     protected static final String DEFAULT_HOSTS_NUMBER = "1";
+//     protected String hostNumber = DEFAULT_HOSTS_NUMBER;
+//     protected String weight = "2";
+//     protected String scriptLocation = DEFAULT_SCRIPT_LOCATION;
+//     protected String interactive = "false";
+//     protected int jobID;
+//     protected String queueName;
+//     protected String accessProtocol = "rsh";
+//     protected String resources;
+//     protected String command_path;
 
-    //protected String properties;
+//     //protected String properties;
 
-    /**
-     * Constructeur de la classe OARSubProcess.
-     * 
-     */
+//     /**
+//      * Constructeur de la classe OARSubProcess.
+//      * 
+//      */
 
-    public OARSubProcess() {
-        //Appel constructeur de la classe mère
-        super();
-        setCompositionType(GIVE_COMMAND_AS_PARAMETER);
-        //Initialisation de l'hôte et du chemin de la commande
-        this.hostname = null;
-        this.command_path = DEFAULT_OARSUBPATH;
-    }
+//     public OARSubProcess() {
+//         //Appel constructeur de la classe mère
+//         super();
+//         setCompositionType(GIVE_COMMAND_AS_PARAMETER);
+//         //Initialisation de l'hôte et du chemin de la commande
+//         this.hostname = null;
+//         this.command_path = DEFAULT_OARSUBPATH;
+//     }
 
-    /**
-     * Constructeur de la classe OARSubProcess.
-     * 
-     */
+//     /**
+//      * Constructeur de la classe OARSubProcess.
+//      * 
+//      */
 
-    public OARSubProcess(ExternalProcess targetProcess) {
-        //Appel constructeur de la classe mère
-        super(targetProcess);
-        //Initialisation de l'hôte et du chemin de la commande
-        this.hostname = null;
-        this.command_path = DEFAULT_OARSUBPATH;
-    }
+//     public OARSubProcess(ExternalProcess targetProcess) {
+//         //Appel constructeur de la classe mère
+//         super(targetProcess);
+//         //Initialisation de l'hôte et du chemin de la commande
+//         this.hostname = null;
+//         this.command_path = DEFAULT_OARSUBPATH;
+//     }
 
-    //  ----------------------------------------------------------------------------------------
-    //  -----------------------Extends AbstractExternalProcessDecorator-------------------------
-    //  ----------------------------------------------------------------------------------------
+//     //  ----------------------------------------------------------------------------------------
+//     //  -----------------------Extends AbstractExternalProcessDecorator-------------------------
+//     //  ----------------------------------------------------------------------------------------
 
-    public void setOutputMessageSink(MessageSink outputMessageSink) {
-        if (outputMessageSink == null) {
-            super.setOutputMessageSink(new SimpleMessageSink());
-        } else {
-            super.setOutputMessageSink(outputMessageSink);
-        }
-    }
+//     public void setOutputMessageSink(MessageSink outputMessageSink) {
+//         if (outputMessageSink == null) {
+//             super.setOutputMessageSink(new SimpleMessageSink());
+//         } else {
+//             super.setOutputMessageSink(outputMessageSink);
+//         }
+//     }
 
-    /**
-     * Retourne l'id du job en cours.
-     * @see org.objectweb.proactive.core.process.UniversalProcess#getProcessId()
-     */
+//     /**
+//      * Retourne l'id du job en cours.
+//      * @see org.objectweb.proactive.core.process.UniversalProcess#getProcessId()
+//      */
 
-    public String getProcessId() {
-        return "oar_" + ((OARSubProcess) targetProcess).getProcessId();
-    }
+//     public String getProcessId() {
+//         return "oar_" + ((OARSubProcess) targetProcess).getProcessId();
+//     }
 
-    /**
-     * Retourne les noms des noeuds du job en cours.
-     * @see org.objectweb.proactive.core.process.UniversalProcess#getNodeNumber()
-     */
+//     /**
+//      * Retourne les noms des noeuds du job en cours.
+//      * @see org.objectweb.proactive.core.process.UniversalProcess#getNodeNumber()
+//      */
 
-    public int getNodeNumber() {
+//     public int getNodeNumber() {
 
-        //if (hostNumber.equals("all")) {
-        //    return UniversalProcess.UNKNOWN_NODE_NUMBER;
-        //}
-        return (new Integer(hostNumber).intValue() * new Integer(weight).intValue());
-    }
+//         //if (hostNumber.equals("all")) {
+//         //    return UniversalProcess.UNKNOWN_NODE_NUMBER;
+//         //}
+//         return (new Integer(hostNumber).intValue() * new Integer(weight).intValue());
+//     }
 
-    /**
-     * @see org.objectweb.proactive.core.process.UniversalProcess#getFinalProcess()
-     */
+//     /**
+//      * @see org.objectweb.proactive.core.process.UniversalProcess#getFinalProcess()
+//      */
 
-    public UniversalProcess getFinalProcess() {
-        checkStarted();
-        return ((OARSubProcess) targetProcess).getFinalProcess();
-    }
+//     public UniversalProcess getFinalProcess() {
+//         checkStarted();
+//         return ((OARSubProcess) targetProcess).getFinalProcess();
+//     }
 
-    /**
-     * Sets the location of the script on the remote host
-     * @param location
-     */
-    public void setScriptLocation(String location) {
-        checkStarted();
-        //     if (location != null) {
-        this.scriptLocation = location;
-        //    }
-    }
+//     /**
+//      * Sets the location of the script on the remote host
+//      * @param location
+//      */
+//     public void setScriptLocation(String location) {
+//         checkStarted();
+//         //     if (location != null) {
+//         this.scriptLocation = location;
+//         //    }
+//     }
 
-    /**
-     * Sets the protocol to access booked nodes.
-     * Two possibilities, rsh, ssh. Default is rsh.
-     * @param accessProtocol
-     */
+//     /**
+//      * Sets the protocol to access booked nodes.
+//      * Two possibilities, rsh, ssh. Default is rsh.
+//      * @param accessProtocol
+//      */
 
-    public void setAccessProtocol(String accessProtocol) {
-        this.accessProtocol = accessProtocol;
-    }
+//     public void setAccessProtocol(String accessProtocol) {
+//         this.accessProtocol = accessProtocol;
+//     }
 
-    /**
-     * Set the resource option in the OAR command.
-     * Represents the -l option of OAR
-     * @param res resources to set
-     */
+//     /**
+//      * Set the resource option in the OAR command.
+//      * Represents the -l option of OAR
+//      * @param res resources to set
+//      */
 
-    public void setResources(String res) {
-        checkStarted();
-        if (res != null) {
-            this.resources = res;
-            parseRes(res);
-        }
-    }
+//     public void setResources(String res) {
+//         checkStarted();
+//         if (res != null) {
+//             this.resources = res;
+//             parseRes(res);
+//         }
+//     }
 
-    //    /**
-    //     * Sets the value of the hostList parameter with the given value
-    //     * Not yet included in the oar command
-    //     * @param hostList
-    //     */
-    //
-    //    public void setProperties(String props) {
-    //        checkStarted();
-    //        if (props != null) {
-    //            this.properties = checkProperties(props);
-    //        }
-    //    }
+//     //    /**
+//     //     * Sets the value of the hostList parameter with the given value
+//     //     * Not yet included in the oar command
+//     //     * @param hostList
+//     //     */
+//     //
+//     //    public void setProperties(String props) {
+//     //        checkStarted();
+//     //        if (props != null) {
+//     //            this.properties = checkProperties(props);
+//     //        }
+//     //    }
 
-    /**
-     * Allows to launch this OARSubProcess with -I (interactive option)
-     * Not yet included in the oar command
-     * @param interactive true for -I option false otherwise
-     */
+//     /**
+//      * Allows to launch this OARSubProcess with -I (interactive option)
+//      * Not yet included in the oar command
+//      * @param interactive true for -I option false otherwise
+//      */
 
-    public void setInteractive(String interactive) {
-        this.interactive = interactive;
-    }
+//     public void setInteractive(String interactive) {
+//         this.interactive = interactive;
+//     }
 
-    /**
-     * Sets the value of the queue where the job will be launched. The default is 'normal'.
-     * Not yet included in the oar command.
-     * @param queueName
-     */
+//     /**
+//      * Sets the value of the queue where the job will be launched. The default is 'normal'.
+//      * Not yet included in the oar command.
+//      * @param queueName
+//      */
 
-    public void setQueueName(String queueName) {
-        checkStarted();
-        if (queueName == null) {
-            throw new NullPointerException();
-        }
-        this.queueName = queueName;
-    }
+//     public void setQueueName(String queueName) {
+//         checkStarted();
+//         if (queueName == null) {
+//             throw new NullPointerException();
+//         }
+//         this.queueName = queueName;
+//     }
 
-    protected String parseHostname(String message) {
-        //To be modified for OAR, does not work with the present code
-        String result = new String();
-        //if (logger.isDebugEnabled()) {
-        //    logger.debug("parseHostname() analyzing " + message);
-        //}
-        java.util.StringTokenizer st = new java.util.StringTokenizer(message);
-        if (st.countTokens() < 2) {
-            return null; //at least two tokens
-        }
-        if (!":".equals(st.nextToken())) {
-            return null; //should start with :
-        }
+//     protected String parseHostname(String message) {
+//         //To be modified for OAR, does not work with the present code
+//         String result = new String();
+//         //if (logger.isDebugEnabled()) {
+//         //    logger.debug("parseHostname() analyzing " + message);
+//         //}
+//         java.util.StringTokenizer st = new java.util.StringTokenizer(message);
+//         if (st.countTokens() < 2) {
+//             return null; //at least two tokens
+//         }
+//         if (!":".equals(st.nextToken())) {
+//             return null; //should start with :
+//         }
 
-        while (st.hasMoreTokens()) {
-            result += (st.nextToken());
-            result += " ";
-        }
-        return result;
-    }
+//         while (st.hasMoreTokens()) {
+//             result += (st.nextToken());
+//             result += " ";
+//         }
+//         return result;
+//     }
 
-    //    protected String internalBuildCommand() {
-    //        return buildEnvironmentCommand(); // + buildPSubCommand();
-    //    }
+//     //    protected String internalBuildCommand() {
+//     //        return buildEnvironmentCommand(); // + buildPSubCommand();
+//     //    }
 
-    protected void internalStartProcess(String commandToExecute)
-            throws java.io.IOException {
-        ArrayList<String> al = new ArrayList<String>();
+//     protected void internalStartProcess(String commandToExecute)
+//             throws java.io.IOException {
+//         ArrayList<String> al = new ArrayList<String>();
 
-        //we divide the command into tokens
-        //it's basically 3 blocks, the script path, the option and the rest
+//         //we divide the command into tokens
+//         //it's basically 3 blocks, the script path, the option and the rest
 
-        Pattern p = Pattern.compile("(.*) .*(-c).*'(.*)'");
-        Matcher m = p.matcher(command);
-        if (!m.matches()) {
-            System.err.println("Could not match command ");
-            System.err.println(commandToExecute);
-        }
-        for (int i = 1; i <= m.groupCount(); i++) {
-            //            System.out.println(m.group(i));
-            al.add(m.group(i));
-        }
-        String[] command = al.toArray(new String[] {  });
+//         Pattern p = Pattern.compile("(.*) .*(-c).*'(.*)'");
+//         Matcher m = p.matcher(command);
+//         if (!m.matches()) {
+//             System.err.println("Could not match command ");
+//             System.err.println(commandToExecute);
+//         }
+//         for (int i = 1; i <= m.groupCount(); i++) {
+//             //            System.out.println(m.group(i));
+//             al.add(m.group(i));
+//         }
+//         String[] command = al.toArray(new String[] {  });
 
-        try {
-            externalProcess = Runtime.getRuntime().exec(command);
-            java.io.BufferedReader in = new java.io.BufferedReader(new java.io.InputStreamReader(
-                    externalProcess.getInputStream()));
-            java.io.BufferedReader err = new java.io.BufferedReader(new java.io.InputStreamReader(
-                    externalProcess.getErrorStream()));
-            java.io.BufferedWriter out = new java.io.BufferedWriter(new java.io.OutputStreamWriter(
-                    externalProcess.getOutputStream()));
-            handleProcess(in, out, err);
-        } catch (java.io.IOException e) {
-            isFinished = true;
-            //throw e;
-            e.printStackTrace();
-        }
-    }
+//         try {
+//             externalProcess = Runtime.getRuntime().exec(command);
+//             java.io.BufferedReader in = new java.io.BufferedReader(new java.io.InputStreamReader(
+//                     externalProcess.getInputStream()));
+//             java.io.BufferedReader err = new java.io.BufferedReader(new java.io.InputStreamReader(
+//                     externalProcess.getErrorStream()));
+//             java.io.BufferedWriter out = new java.io.BufferedWriter(new java.io.OutputStreamWriter(
+//                     externalProcess.getOutputStream()));
+//             handleProcess(in, out, err);
+//         } catch (java.io.IOException e) {
+//             isFinished = true;
+//             //throw e;
+//             e.printStackTrace();
+//         }
+//     }
 
-    /**
-     * oarsub is not able to receive env variables or parameters for a script
-     * we thus rely on the following trick, the command has the form
-     * echo "real command" | qsub -I ...   oarStartRuntime.sh
-     */
+//     /**
+//      * oarsub is not able to receive env variables or parameters for a script
+//      * we thus rely on the following trick, the command has the form
+//      * echo "real command" | qsub -I ...   oarStartRuntime.sh
+//      */
 
-    protected String internalBuildCommand() {
-        StringBuilder oarsubCommand = new StringBuilder();
-        oarsubCommand.append(
-                "/bin/sh -c  'echo for i in \\`cat \\$OAR_NODEFILE\\` \\; do " +
-                        accessProtocol + " \\$i  ");
-        oarsubCommand.append(targetProcess.getCommand());
-        oarsubCommand.append(" \\&  done  \\; wait > ");
-        oarsubCommand.append(scriptLocation).append(" ; ");
-        oarsubCommand.append(command_path);
-        oarsubCommand.append(" ");
-        if (resources != null) {
-            oarsubCommand.append("-l " + resources).append(" ");
-        }
+//     protected String internalBuildCommand() {
+//         StringBuilder oarsubCommand = new StringBuilder();
+//         oarsubCommand.append(
+//                 "/bin/sh -c  'echo for i in \\`cat \\$OAR_NODEFILE\\` \\; do " +
+//                         accessProtocol + " \\$i  ");
+//         oarsubCommand.append(targetProcess.getCommand());
+//         oarsubCommand.append(" \\&  done  \\; wait > ");
+//         oarsubCommand.append(scriptLocation).append(" ; ");
+//         oarsubCommand.append(command_path);
+//         oarsubCommand.append(" ");
+//         if (resources != null) {
+//             oarsubCommand.append("-l " + resources).append(" ");
+//         }
 
-        //To implement if needed
-        //        if(properties != null){
-        //            oarsubCommand.append("-p "+properties).append(" ");
-        //        }
+//         //To implement if needed
+//         //        if(properties != null){
+//         //            oarsubCommand.append("-p "+properties).append(" ");
+//         //        }
 
-        oarsubCommand.append(scriptLocation).append(" '");
-        //if (logger.isDebugEnabled()) {
-        //    logger.debug("oarsub command is " + oarsubCommand.toString());
-        //}
-        return oarsubCommand.toString();
-    }
+//         oarsubCommand.append(scriptLocation).append(" '");
+//         //if (logger.isDebugEnabled()) {
+//         //    logger.debug("oarsub command is " + oarsubCommand.toString());
+//         //}
+//         return oarsubCommand.toString();
+//     }
 
-    /**
-     * @param res
-     */
-    private void parseRes(String res) {
-        String[] resTab = res.split(",");
-        for (int i = 0; i < resTab.length; i++) {
-            if (!(resTab[i].indexOf("nodes") < 0)) {
-                hostNumber = resTab[i].substring(resTab[i].indexOf("=") + 1,
-                        resTab[i].length());
-            }
-            if (!(resTab[i].indexOf("weight") < 0)) {
-                weight = resTab[i].substring(resTab[i].indexOf("=") + 1,
-                        resTab[i].length());
-            }
-        }
-    }
+//     /**
+//      * @param res
+//      */
+//     private void parseRes(String res) {
+//         String[] resTab = res.split(",");
+//         for (int i = 0; i < resTab.length; i++) {
+//             if (!(resTab[i].indexOf("nodes") < 0)) {
+//                 hostNumber = resTab[i].substring(resTab[i].indexOf("=") + 1,
+//                         resTab[i].length());
+//             }
+//             if (!(resTab[i].indexOf("weight") < 0)) {
+//                 weight = resTab[i].substring(resTab[i].indexOf("=") + 1,
+//                         resTab[i].length());
+//             }
+//         }
+//     }
 
-    public static void main (String[] args) {
-        System.out.println("Testing OARSubProcess");
-        JVMProcessImpl p = new JVMProcessImpl();
-        OARSubProcess oar = new OARSubProcess(p);
-        oar.setResources("nodes=2");
-        System.out.println(oar.buildCommand());
-    }
-}
+//     public static void main (String[] args) {
+//         System.out.println("Testing OARSubProcess");
+//         JVMProcessImpl p = new JVMProcessImpl();
+//         OARSubProcess oar = new OARSubProcess(p);
+//         oar.setResources("nodes=2");
+//         System.out.println(oar.buildCommand());
+//     }
+// }
