@@ -1,5 +1,7 @@
 import javax.swing.*;
 
+import com.jcraft.jsch.Session;
+
 import java.awt.GridLayout;
 import java.awt.event.*;
 
@@ -111,6 +113,10 @@ public class InterfaceUtilisateur {
         });
     }
 
+    public static void closeGUI() {
+        frame.setVisible(false);
+    }
+
     /*
     public void fermerBoite() {
         frame.setVisible(false);
@@ -120,6 +126,5 @@ public class InterfaceUtilisateur {
     public static void main (String args[]) {
 
         InterfaceUtilisateur boite = new InterfaceUtilisateur();
-
     }
 }

@@ -21,15 +21,18 @@ import java.awt.event.KeyEvent;
 
 public class OARNoeuds extends JFrame {
 
+    private JFrame noeuds;
     private JPanel contentPane;
     private JTextField jtf_nbNoeuds;
     private JTextField jtf_tpsAllocation;
+    private int nbNoeuds;
+    private int tpsAllocation;
 
     /**
      * Launch the application.
      */
 
-    public static void lancementFenetre () {
+    /*public static void main (String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -40,7 +43,7 @@ public class OARNoeuds extends JFrame {
                 }
             }
         });
-    }
+    }*/
 
     /**
      * Create the frame.
@@ -48,12 +51,15 @@ public class OARNoeuds extends JFrame {
 
     public OARNoeuds() {
         
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //setBounds(100, 100, 450, 300);
-        setSize(450,200);
+        noeuds = new JFrame();
+        noeuds.setVisible(true);
+        noeuds.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        noeuds.setBounds(100, 100, 450, 300);
+        noeuds.setSize(450,200);
+        
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        setContentPane(contentPane);
+        noeuds.setContentPane(contentPane);
         contentPane.setLayout(new GridLayout(1, 0, 0, 0));
 
         JPanel bouton_allouer = new JPanel();
@@ -92,7 +98,15 @@ public class OARNoeuds extends JFrame {
         btn_Allouer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //Lancer le oarsub
+                try {
+                    SSHConnexion.commandeOARSUB(Integer.parseInt(jtf_nbNoeuds.getText()), Integer.parseInt(jtf_tpsAllocation.getText()));
+                } catch (NumberFormatException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (Exception e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
         GroupLayout gl_bouton_allouer = new GroupLayout(bouton_allouer);
