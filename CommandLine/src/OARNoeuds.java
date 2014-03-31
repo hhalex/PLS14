@@ -99,7 +99,7 @@ public class OARNoeuds extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    SSHConnexion.commandeOARSUB(Integer.parseInt(jtf_nbNoeuds.getText()), Integer.parseInt(jtf_tpsAllocation.getText()));
+                    //SSHConnexion.commandeOARSUB(Integer.parseInt(jtf_nbNoeuds.getText()), Integer.parseInt(jtf_tpsAllocation.getText()));
                 } catch (NumberFormatException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();

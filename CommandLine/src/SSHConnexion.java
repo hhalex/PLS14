@@ -10,7 +10,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
 
-public class SSHConnexion {
+public class SSH {
 
     String host;
     String user;
@@ -18,7 +18,7 @@ public class SSHConnexion {
     static Session session_final;
 
 
-    public SSHConnexion (String host, String user, String password) {
+    public SSH (String host, String user, String password) {
 
         this.host = host;
         this.user = user;
@@ -70,111 +70,45 @@ public class SSHConnexion {
             session_term2.connect();
             System.out.println("Connecté à " + host_term2);
 
-            // Réglages du port de term2 afin de se connecter via ce serveur à au cluster
-            //int assinged_port_cluster = session_term2.setPortForwardingL(0, host_cluster, 22);
-
-            /*
-             * Connection au cluster via la machine frontale term2
-             */
-
-            /*
-            session_cluster = jsch.getSession(user, "127.0.0.1", assinged_port_cluster);
-            session_cluster.setConfig(config);
-            session_cluster.setPassword(password);
-            System.out.println("Connexion à " + host_cluster + " ...");
-            session_cluster.connect();
-            System.out.println("Connecté à " + host_cluster);
-             */
-
             session_final = session_term2;
 
-            //System.out.println("Est-ce que sesseion_final est connectée ? " + String.valueOf(session_final.isConnected()));
-
-            //System.out.println("Est-ce que sesseion_ghome est connectée ? " + String.valueOf(session_ghome.isConnected()));
-            //System.out.println("Est-ce que sesseion_term2 est connectée ? " + String.valueOf(session_term2.isConnected()));
-            //System.out.println(String.valueOf(session_cluster.isConnected()));
-
-            //executerCommande(command);
-            //executerCommande(cat);
-
-            //System.out.println("Est-ce que sesseion_ghome est connectée ? " + String.valueOf(session_ghome.isConnected()));
-            //System.out.println("Est-ce que sesseion_term2 est connectée ? " + String.valueOf(session_term2.isConnected()));
-
-            if(session_final.isConnected()) {
+	    if(session_final.isConnected()) {
                 OARNoeuds noeuds = new OARNoeuds();   
                 InterfaceUtilisateur.closeGUI();
             }
 
+             Channel channel = session_term2.openChannel("shell");
+	     
+	     
+	     InputStream in = channel.getInputStream();
+	     OutputStream out = channel.getOutputStream();
+	     
+	     ((ChannelShell)channel).setPtyType("vt102");
+	     channel.connect();
+	     
+	     byte[] tmp=new byte[1024];
+	     
+	     out.write((command + ";hostname").getBytes());
+	     out.write(("\n").getBytes());
+	     out.flush();
 
-            
-            Channel channel = session_term2.openChannel("shell");
 	    
-	    
-	    InputStream in = channel.getInputStream();
-	    OutputStream out = channel.getOutputStream();
 
-	    ((ChannelShell)channel).setPtyType("vt102");
-	    channel.connect();
-
-	    byte[] tmp=new byte[1024];
-
-	    out.write((command + ";hostname").getBytes());
-	    out.write(("\n").getBytes());
-	    out.flush();
-
-	    while (true) {  
-
-		while (in.available() > 0) {
-		    int i = in.read(tmp, 0, 1024);
-		    if (i < 0) {
-			//System.out.println("[debug] breaking at i < 0");
-			break;
-		    }
-		    String buffer = new String(tmp, 0, i);
-		    System.out.println( buffer);
-		    if(buffer.contains("REMOTE JSH COMMAND FINISHED")){
-			System.out.println("[debug] breaking at finished");
-			break;
-		    }
-		}
-		if (channel.isClosed()) {
-		    //System.out.println("[debug] breaking at isClosed");
-		    in.close();
-		    break;
-		}
-	    }
-
-            //}
-
-            /*
-             * Feed-back de la console sous forme de byte[]
-             * Implémenter espace où l'utilisateur suit l'évolution de la connexion
-             */
-
-        //byte[] tmp=new byte[1024];
-	//
-        //while(true){
-        //    while(in.available()>0){
-        //        int i=in.read(tmp, 0, 1024);
-        //        if(i<0)break;
-        //        System.out.print(new String(tmp, 0, i));
-        //    }
-        //    if(channel.isClosed()){
-        //        System.out.println("exit-status: " + channel.getExitStatus());
-        //        break;
-        //    }
-        //    try{Thread.sleep(1000);}catch(Exception ee){}
-        //}
-
-            /*
-            channel.disconnect();
-            session_term2.disconnect();
-            System.out.println("Déconnexion de " + host_term2 + " réussie");
-            session_ghome.disconnect();
-            System.out.println("Déconnexion de " + host + " réussie");
-            System.out.println("--------------------");
-             */
-
+	     
+	     	while (in.available() > 0) {
+	     	    int i = in.read(tmp, 0, 1024);
+	     	    if (i < 0) {
+	     		//System.out.println("[debug] breaking at i < 0");
+	     		break;
+	     	    }
+	     	    String buffer = new String(tmp, 0, i);
+	     	    System.out.println( buffer);
+	     	    if(buffer.contains("REMOTE JSH COMMAND FINISHED")){
+	     		System.out.println("[debug] breaking at finished");
+	     		break;
+	     	    }
+	     	}
+	     	
         }catch(Exception e){
             e.printStackTrace();
             System.out.println("Votre identifiant ou mot de passe ou l'adresse de la MF est erroné");
@@ -188,68 +122,6 @@ public class SSHConnexion {
              * 
              */
 
-        }
-    }
-
-    private static void executerCommande(String cmd) throws Exception {
-
-        Channel channel = SSHConnexion.session_final.openChannel("exec");
-        ( (ChannelExec) channel).setCommand(cmd);
-        channel.setInputStream(null);
-        ( (ChannelExec) channel).setErrStream(System.err);
-        /*
-         * in est un thread qui est créé pour lire les bytes de sortie du terminal
-         * Il est détruit après lecture
-         */
-        InputStream in = channel.getInputStream();
-
-        System.out.println("Est-ce que le canal est actif ? " + String.valueOf(channel.isConnected()));
-        System.out.println("Connexion du canal...");
-        channel.connect();
-        System.out.println("Canal connecté");
-        System.out.println("Est-ce que le canal est actif ? " + String.valueOf(channel.isConnected()));
-
-        terminalPrintState(in);
-
-        System.out.println(String.valueOf(channel.isClosed()));
-        System.out.println("Processus terminé");
-
-        /*
-        byte[] tmp=new byte[1024];
-
-        while(true){
-            while(in.available()>0){
-                int i=in.read(tmp, 0, 1024);
-                if(i<0)break;
-                System.out.print(new String(tmp, 0, i));
-            }
-            if(channel.isClosed()){
-                // System.out.println("exit-status: " + channel.getExitStatus());
-                break;
-            }
-            try{Thread.sleep(1000);}catch(Exception ee){}
-        }
-         */
-    }
-
-    private static void terminalPrintState(InputStream in) throws IOException, InterruptedException {
-
-        byte[] tmp=new byte[1024];
-
-        while(true){
-            while(in.available()>0){
-                int i=in.read(tmp, 0, 1024);
-                if(i==0){System.out.println("On a i<0 et on sort de la boucle");};
-                System.out.println("---------------------");
-                System.out.print(new String(tmp, 0, i));
-            }
-            /*
-            if(channel.isClosed()){
-            System.out.println("exit-status: " + channel.getExitStatus());
-            break;
-            }
-             */
-            try{Thread.sleep(1000);}catch(Exception ee){}
         }
     }
 
