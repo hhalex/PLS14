@@ -28,10 +28,14 @@ public class InterfaceUtilisateur {
 
     public InterfaceUtilisateur() {
 
+	//Création d'une fenêtre de titre "Connexion..."
+
         frame = new JFrame("Connexion MF Supélec");
         frame.setSize(350,130);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	// CRéation des éléments de la fenêtre de connexion à ghome
 
         bouton_connect = new JButton ("Connexion");
         bouton_disconnect = new JButton ("Déconnexion");
@@ -45,11 +49,15 @@ public class InterfaceUtilisateur {
         this.label_mdp = new JLabel("Password : ");
         jtf_mdp = new JPasswordField("");
 
+	//Création de la structure de la boîte pour placer les éléments
+
         this.panel_machine = new JPanel();
         this.panel_login = new JPanel();
         this.panel_mdp = new JPanel();
         this.panel_bouton = new JPanel();
         this.panelGlobal = new JPanel((new GridLayout(0,2)));
+
+	//Placement des boutons dans la fenêtre préparée
 
         this.panel_machine.setLayout(new BoxLayout(panel_machine, BoxLayout.LINE_AXIS));
         this.panel_machine.add(label_machine);
@@ -77,11 +85,14 @@ public class InterfaceUtilisateur {
         frame.setContentPane(panelGlobal);               
         frame.setVisible(true);
 
+	
+
         this.bouton_connect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent eventBouton) {
                 System.out.println("Connexion à la machine frontale " + jtf_machine.getText() + " via l'utilisateur " + jtf_login.getText() + " ...");
                 SSHConnexion ssh= new SSHConnexion(jtf_machine.getText(), jtf_login.getText(), jtf_mdp.getText());
+		System.out.println("Connexion effectuée ! Bonjour " + jtf_login.getText() + " !");
             }
         });
 
