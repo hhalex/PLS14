@@ -19,7 +19,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 
-public class OARNoeuds extends JFrame {
+public class OARNoeuds extends InterfaceGraphiqueUtilisateur {
 
     private JFrame noeuds;
     private JPanel contentPane;
@@ -29,30 +29,14 @@ public class OARNoeuds extends JFrame {
     private int tpsAllocation;
 
     /**
-     * Launch the application.
-     */
-
-    /*public static void main (String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    OARNoeuds frame = new OARNoeuds();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }*/
-
-    /**
      * Create the frame.
      */
 
-    public OARNoeuds() {
+    public OARNoeuds( SSH_OARNoeuds sshoar ) {
         
+	this.ssh = sshoar;
+	
         noeuds = new JFrame();
-        noeuds.setVisible(true);
         noeuds.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         noeuds.setBounds(100, 100, 450, 300);
         noeuds.setSize(450,200);
@@ -99,7 +83,7 @@ public class OARNoeuds extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    //SSHConnexion.commandeOARSUB(Integer.parseInt(jtf_nbNoeuds.getText()), Integer.parseInt(jtf_tpsAllocation.getText()));
+                    //ssh.commandeOARSUB(Integer.parseInt(jtf_nbNoeuds.getText()), Integer.parseInt(jtf_tpsAllocation.getText()));
                 } catch (NumberFormatException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
@@ -147,5 +131,16 @@ public class OARNoeuds extends JFrame {
                                         .addGap(27))
                 );
         bouton_allouer.setLayout(gl_bouton_allouer);
+	noeuds.setVisible(true);
+	noeuds.repaint();
     }
+
+    public void read(){
+	this.ssh.read();
+    }
+
+    public void closeGUI() {
+        this.frame.setVisible(false);
+    }
+
 }

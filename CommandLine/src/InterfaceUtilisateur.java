@@ -35,7 +35,7 @@ public class InterfaceUtilisateur {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-	// CRéation des éléments de la fenêtre de connexion à ghome
+	// Création des éléments de la fenêtre de connexion à ghome
 
         bouton_connect = new JButton ("Connexion");
         bouton_disconnect = new JButton ("Déconnexion");
@@ -85,13 +85,14 @@ public class InterfaceUtilisateur {
         frame.setContentPane(panelGlobal);               
         frame.setVisible(true);
 
-	
+	// Bouton de connexion : listener
 
         this.bouton_connect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent eventBouton) {
-                System.out.println("Connexion à la machine frontale " + jtf_machine.getText() + " via l'utilisateur " + jtf_login.getText() + " ...");
-                SSHConnexion ssh= new SSHConnexion(jtf_machine.getText(), jtf_login.getText(), jtf_mdp.getText());
+        
+		callbackBoutonConnexion();
+		
 		System.out.println("Connexion effectuée ! Bonjour " + jtf_login.getText() + " !");
             }
         });
@@ -106,33 +107,43 @@ public class InterfaceUtilisateur {
                 int key = e.getKeyCode();
                 if (key == KeyEvent.VK_ENTER) {
                     System.out.println("Connexion à la machine frontale " + jtf_machine.getText() + " via l'utilisateur " + jtf_login.getText() + " ...");
-                    SSHConnexion ssh= new SSHConnexion(jtf_machine.getText(), jtf_login.getText(), jtf_mdp.getText());
+                    SSH ssh = new SSH(jtf_machine.getText(), jtf_login.getText(), jtf_mdp.getText());
                 }
             }
         });
-
-        this.bouton_disconnect.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent eventBouton) {
-                /* 
-                 * Il faut implémenter ce bouton de façon à lancer :
-                 * 
-                 * channel.disconnect();
-                 * session_term2.disconnect();
-                 * session_ghome.disconnect();
-                 */
-            }
-        });
     }
 
-    public static void closeGUI() {
-        frame.setVisible(false);
+    private void callbackBoutonConnexion(){
+	System.out.println(
+	    "Connexion à la machine frontale " + 
+	    jtf_machine.getText() + 
+	    " via l'utilisateur " + 
+	    jtf_login.getText() + 
+	    " ..."
+	);
+
+	SSH ssh_ghome = null;
+	do{
+	    ssh_ghome = new SSH(jtf_machine.getText(), jtf_login.getText(), jtf_mdp.getText());
+	    ssh_ghome.connect();
+	}while(!ssh_ghome.sessionActive());
+
+	SSH_OARNoeuds sshOAR = new SSH_OARNoeuds("term2.grid.metz.supelec.fr", jtf_login.getText(), jtf_mdp.getText());
+	sshOAR.connectFromSSH(ssh_ghome);
+
+	this.closeGUI();
+	sshOAR.openChannel("shell");
+
+	OARNoeuds oarNoeuds = new OARNoeuds(sshOAR);
+
+	oarNoeuds.read();
+
+	sshOAR.closeChannel();
     }
 
-    /*
-    public void fermerBoite() {
-        frame.setVisible(false);
+    public void closeGUI() {
+        this.frame.setVisible(false);
     }
-     */
 
     public static void main (String args[]) {
 

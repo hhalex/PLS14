@@ -16,7 +16,7 @@ public abstract class InterfaceGraphiqueUtilisateur {
 
     protected JPanel panelConteneur;
     protected JFrame frame;
-    protected Session sessionCourante;
+    protected SSH ssh;
 
     public InterfaceGraphiqueUtilisateur() {
 
@@ -24,8 +24,6 @@ public abstract class InterfaceGraphiqueUtilisateur {
          * Définir la constructeur dans chaque classe fille
          */
     }
-
-    public abstract void fermerInterface();
 
     public static void main(String[] args) {
 
