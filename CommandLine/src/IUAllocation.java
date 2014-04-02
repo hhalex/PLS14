@@ -19,7 +19,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 
-public class OARNoeuds extends InterfaceGraphiqueUtilisateur {
+public class IUAllocation extends InterfaceGraphiqueUtilisateur {
 
     private JFrame noeuds;
     private JPanel contentPane;
@@ -32,7 +32,7 @@ public class OARNoeuds extends InterfaceGraphiqueUtilisateur {
      * Create the frame.
      */
 
-    public OARNoeuds( SSH_OARNoeuds sshoar ) {
+    public IUAllocation( SSH_IUAllocation sshoar ) {
         
 	this.ssh = sshoar;
 	
@@ -135,8 +135,8 @@ public class OARNoeuds extends InterfaceGraphiqueUtilisateur {
 	noeuds.repaint();
     }
 
-    public void read(){
-	this.ssh.read();
+    public Runnable getRunnableReader(){
+	return this.ssh.getRunnableReader();
     }
 
     public void closeGUI() {

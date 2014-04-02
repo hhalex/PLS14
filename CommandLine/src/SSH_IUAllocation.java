@@ -10,10 +10,10 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
 
-public class SSH_OARNoeuds extends SSH {
+public class SSH_IUAllocation extends SSH {
 
 
-    public SSH_OARNoeuds (String host, String user, String password) {
+    public SSH_IUAllocation (String host, String user, String password) {
 	super(host, user, password);
     }
 

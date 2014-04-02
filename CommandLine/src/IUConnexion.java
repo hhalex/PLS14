@@ -5,7 +5,7 @@ import com.jcraft.jsch.Session;
 import java.awt.GridLayout;
 import java.awt.event.*;
 
-public class InterfaceUtilisateur {
+public class IUConnexion {
 
     static JFrame frame;
 
@@ -26,7 +26,7 @@ public class InterfaceUtilisateur {
     private JButton bouton_connect;
     private JButton bouton_disconnect;
 
-    public InterfaceUtilisateur() {
+    public IUConnexion() {
 
 	//Création d'une fenêtre de titre "Connexion..."
 
@@ -128,17 +128,16 @@ public class InterfaceUtilisateur {
 	    ssh_ghome.connect();
 	}while(!ssh_ghome.sessionActive());
 
-	SSH_OARNoeuds sshOAR = new SSH_OARNoeuds("term2.grid.metz.supelec.fr", jtf_login.getText(), jtf_mdp.getText());
+	SSH_IUAllocation sshOAR = new SSH_IUAllocation("term2.grid.metz.supelec.fr", jtf_login.getText(), jtf_mdp.getText());
 	sshOAR.connectFromSSH(ssh_ghome);
 
 	this.closeGUI();
 	sshOAR.openChannel("shell");
 
-	OARNoeuds oarNoeuds = new OARNoeuds(sshOAR);
+	IUAllocation oarNoeuds = new IUAllocation(sshOAR);
 
-	oarNoeuds.read();
+	SwingUtilities.invokeLater(oarNoeuds.getRunnableReader());
 
-	sshOAR.closeChannel();
     }
 
     public void closeGUI() {
@@ -147,6 +146,6 @@ public class InterfaceUtilisateur {
 
     public static void main (String args[]) {
 
-        InterfaceUtilisateur boite = new InterfaceUtilisateur();
+        IUConnexion boite = new IUConnexion();
     }
 }

@@ -98,24 +98,28 @@ public class SSH {
 	}
     }
 
-    public void read(){
-	try {
-	    byte[] tmp=new byte[1024];
-
-	    while(true){
-		int i= this.in.read(tmp, 0, 1024);
-		System.out.print(new String(tmp, 0, i));
-		if(channel.isClosed()){
-		    System.out.println("exit-status: "+channel.getExitStatus());
-		    break;
+    public Runnable getRunnableReader(){
+	Runnable code = new Runnable() {
+		public void run() {
+		    try {
+			byte[] tmp=new byte[1024];
+			
+			while(true){
+			    int i= in.read(tmp, 0, 1024);
+			    System.out.print(new String(tmp, 0, i));
+			    if(channel.isClosed()){
+				System.out.println("exit-status: "+channel.getExitStatus());
+				break;
+			    }
+			}
+		    }
+		    catch (Exception e) {
+			System.out.println("Error " + e.getMessage());
+			e.printStackTrace();
+		    }
 		}
-	    }
-	}
-	catch (Exception e) {
-	    System.out.println("Error " + e.getMessage());
-	    e.printStackTrace();
-	}
-
+	    };
+	return code;
     }
 
     public Session getSession() {
