@@ -5,9 +5,7 @@ import com.jcraft.jsch.Session;
 import java.awt.GridLayout;
 import java.awt.event.*;
 
-public class IUConnexion {
-
-    static JFrame frame;
+public class IUConnexion extends InterfaceGraphiqueUtilisateur{
 
     private JPanel panel_machine;
     private JPanel panel_login;
@@ -135,8 +133,18 @@ public class IUConnexion {
 	sshOAR.openChannel("shell");
 
 	IUAllocation oarNoeuds = new IUAllocation(sshOAR);
+	try {
+	    Thread.sleep(500);
+	}
+	catch (Exception e) {
+	    System.out.println("Error " + e.getMessage());
+	    e.printStackTrace();
+	}
 
-	SwingUtilities.invokeLater(oarNoeuds.getRunnableReader());
+	oarNoeuds.displayReceivedMessage();
+	sshOAR.sendCommand("ls -l");
+
+	//SwingUtilities.invokeLater(oarNoeuds.getRunnableReader());
 
     }
 

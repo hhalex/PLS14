@@ -27,6 +27,6 @@ public abstract class InterfaceGraphiqueUtilisateur {
 
     public static void main(String[] args) {
 
-        InterfaceUtilisateur connexionClusterIU = new InterfaceUtilisateur();
+        IUConnexion connexionClusterIU = new IUConnexion();
     }
 }

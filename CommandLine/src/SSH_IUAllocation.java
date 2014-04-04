@@ -36,7 +36,6 @@ public class SSH_IUAllocation extends SSH {
             this.session = jsch.getSession(this.user, "127.0.0.1", assigned_port);
             this.session.setConfig(config);
             this.session.setPassword(this.password);
-            System.out.println("Connexion à " + this.host + " ...");
             this.session.setServerAliveInterval(3600000);
             this.session.connect();
             System.out.println("Connecté à " + this.host);

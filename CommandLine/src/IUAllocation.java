@@ -132,11 +132,12 @@ public class IUAllocation extends InterfaceGraphiqueUtilisateur {
                 );
         bouton_allouer.setLayout(gl_bouton_allouer);
 	noeuds.setVisible(true);
-	noeuds.repaint();
     }
 
-    public Runnable getRunnableReader(){
-	return this.ssh.getRunnableReader();
+    public void displayReceivedMessage(){
+	String msg = this.ssh.readReceivedMessage();
+
+	// affiche msg dans la jtetarea
     }
 
     public void closeGUI() {

@@ -98,31 +98,49 @@ public class SSH {
 	}
     }
 
-    public Runnable getRunnableReader(){
-	Runnable code = new Runnable() {
-		public void run() {
-		    try {
-			byte[] tmp=new byte[1024];
+    public void sendCommand(String command){
+	try {
+	    this.channel.setInputStream(new ByteArrayInputStream(command.getBytes()));
+	    this.in = channel.getInputStream();
+	    this.out = channel.getOutputStream();
+	}
+	catch (Exception e) {
+	    System.out.println("Error " + e.getMessage());
+	    e.printStackTrace();
+	}
+
+	this.readReceivedMessage();
+    }
+
+    public String readReceivedMessage (){
+
+	String msg="";
+	
+	try {
+
+	    byte[] tmp=new byte[1024];
+	    String tmp_str="";
 			
-			while(true){
-			    int i= in.read(tmp, 0, 1024);
-			    System.out.print(new String(tmp, 0, i));
-			    if(channel.isClosed()){
-				System.out.println("exit-status: "+channel.getExitStatus());
-				break;
-			    }
-			}
-		    }
-		    catch (Exception e) {
-			System.out.println("Error " + e.getMessage());
-			e.printStackTrace();
-		    }
+	    while(in.available() > 0){
+		int i= in.read(tmp, 0, 1024);
+		tmp_str = new String(tmp, 0, i);
+		msg+=tmp_str;
+		if(channel.isClosed()){
+		    System.out.println("exit-status: "+channel.getExitStatus());
+		    break;
 		}
-	    };
-	return code;
+	    }
+	    System.out.print(msg);
+
+	}
+	catch (Exception e) {
+	    System.out.println("Error " + e.getMessage());
+	    e.printStackTrace();
+	}
+	return msg;
     }
 
     public Session getSession() {
-        return session;
+        return this.session;
     }
 }
