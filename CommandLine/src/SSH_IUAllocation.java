@@ -73,4 +73,9 @@ public class SSH_IUAllocation extends SSH {
 	String command = "oardel -j $OAR_JOB_ID";
 	this.sendCommand(command);
     }
+
+    public void infosCurrentJob() {
+	String command = "oarstat -fj $OAR_JOB_ID";
+	this.sendCommand(command);
+    }
 }

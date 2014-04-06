@@ -145,37 +145,20 @@ public class IUConnexion extends InterfaceGraphiqueUtilisateur {
 	    System.out.println("Votre identifiant ou mot de passe ou l'adresse de la MF est erroné");
 	    System.out.println("--------------------");
 	}else{		
-	    this.ssh = sshOAR;
 	    this.closeGUI();
 	    sshOAR.openChannel("shell");
-	    passerelleIU();
+	    passerelleIU(sshOAR);
 	};
     }
 
-    private void passerelleIU() {
+    private void passerelleIU(SSH_IUAllocation sshOAR) {
 
 	System.out.println("Bonjour " + jtf_login.getText() + " !");
 
-	IUAllocation oarNoeuds = new IUAllocation((SSH_IUAllocation) this.ssh);
-	this.ssh.sendCommand("ls -l");
-
+	IUAllocation oarNoeuds = new IUAllocation(sshOAR);
 	Timer timer = oarNoeuds.createRefreshTimer ();
 	timer.start ();
 
-	// while(true){
-	//     if(this.ssh.hasMessage()){
-	// 	oarNoeuds.displayReceivedMessage();
-	//     }
-	//     else
-	//     {
-	// 	try {
-	// 	    Thread.sleep(200);
-	// 	} catch (Exception e) {
-	// 	    System.out.println("Error " + e.getMessage());
-	// 	    e.printStackTrace();
-	// 	}
-	//     }
-	// }
     }
 
     public void closeGUI() {

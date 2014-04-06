@@ -23,7 +23,7 @@ public class IUAllocation extends InterfaceGraphiqueUtilisateur {
     private JPanel panel_tpsAllocation;
     private JPanel panel_bouton_killjob;
     private JPanel panel_bouton_allouer;
-    private JPanel panel_bouton_refresh;
+    private JPanel panel_bouton_infos;
     private JScrollPane panel_jta;
 
     static private JTextArea jta_connexion;
@@ -35,7 +35,7 @@ public class IUAllocation extends InterfaceGraphiqueUtilisateur {
 
     private JButton bouton_killjob;
     private JButton bouton_allouer;
-    private JButton bouton_refresh;
+    private JButton bouton_infos;
 
     public IUAllocation(SSH_IUAllocation sshoar) {
 
@@ -49,9 +49,9 @@ public class IUAllocation extends InterfaceGraphiqueUtilisateur {
 
 	// Création des éléments de la fenêtre pour l'allocation des noeuds
 
-	bouton_killjob = new JButton("Tuer Job");
-	bouton_allouer = new JButton("Allouer");
-	bouton_refresh = new JButton("Rafraîchir");
+	bouton_killjob = new JButton("Tuer le job actif");
+	bouton_allouer = new JButton("Allouer les noeuds");
+	bouton_infos = new JButton("Infos sur le job actif");
 
 	this.label_nbNoeuds = new JLabel("Nombre de noeuds :");
 	jtf_nbNoeuds = new JTextField("");
@@ -69,7 +69,7 @@ public class IUAllocation extends InterfaceGraphiqueUtilisateur {
 	this.panel_tpsAllocation = new JPanel();
 	this.panel_bouton_killjob = new JPanel();
 	this.panel_bouton_allouer = new JPanel();
-	this.panel_bouton_refresh = new JPanel();
+	this.panel_bouton_infos = new JPanel();
 	this.panel_jta = new JScrollPane (jta_connexion, 
 					  JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	this.panelConteneur = new JPanel(new GridLayout(0,2));
@@ -90,8 +90,8 @@ public class IUAllocation extends InterfaceGraphiqueUtilisateur {
 	this.panel_bouton_allouer.setLayout(new BoxLayout(panel_bouton_allouer, BoxLayout.LINE_AXIS));
 	this.panel_bouton_allouer.add(bouton_allouer);
 
-	this.panel_bouton_refresh.setLayout(new BoxLayout(panel_bouton_refresh, BoxLayout.LINE_AXIS));
-	this.panel_bouton_refresh.add(bouton_refresh);
+	this.panel_bouton_infos.setLayout(new BoxLayout(panel_bouton_infos, BoxLayout.LINE_AXIS));
+	this.panel_bouton_infos.add(bouton_infos);
 
 
 	this.panelConteneur.setLayout(new BoxLayout(this.panelConteneur, BoxLayout.PAGE_AXIS));
@@ -100,7 +100,7 @@ public class IUAllocation extends InterfaceGraphiqueUtilisateur {
 	this.panelConteneur.add(panel_tpsAllocation);
 	this.panelConteneur.add(panel_bouton_killjob);
 	this.panelConteneur.add(panel_bouton_allouer);
-	this.panelConteneur.add(panel_bouton_refresh);
+	this.panelConteneur.add(panel_bouton_infos);
 	this.panelConteneur.add(this.panel_jta);
 
 	this.frame.setContentPane(this.panelConteneur);
@@ -180,11 +180,11 @@ public class IUAllocation extends InterfaceGraphiqueUtilisateur {
 	 * Download les données présentes sur le channel provenant de term2 lorsqu'on click sur le bouton
 	 */
 
-	bouton_refresh.addActionListener(new SSHOARActionListener(this.ssh) {
+	bouton_infos.addActionListener(new SSHOARActionListener(this.ssh) {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 		    try {
-			displayReceivedMessage();
+			this.ssh.infosCurrentJob();
 		    } catch (NumberFormatException e1) {	
 		    } catch (Exception e1) {}
 		}
@@ -194,7 +194,7 @@ public class IUAllocation extends InterfaceGraphiqueUtilisateur {
 	 * Download les données présentes sur le channel provenant de term2 lorsqu'on appui sur "Enter"
 	 */
 
-	bouton_refresh.addKeyListener(new KeyAdapter() {
+	bouton_infos.addKeyListener(new KeyAdapter() {
 		@Override
 		public void keyPressed(KeyEvent e) {
 		    int key = e.getKeyCode();
