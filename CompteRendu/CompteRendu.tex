@@ -1,5 +1,5 @@
 \include{styles}
-
+\usepackage{minted}
 \usepackage{verbatim}
 \usepackage{moreverb}
 \let\verbatiminput=\verbatimtabinput
@@ -25,7 +25,7 @@
 \newpage
 
 % Introduction
-\include{partie1}
+%\include{partie1}
 
 % Description du projet
 \include{partie_description_projet}
@@ -33,14 +33,19 @@
 % Dossier de spécification
 \include{partie_dossier_specification}
 
+% Plan de test
+\include{partie_plan_test}
+
+% Connaissances pour la suite
+\include{partie2}
+
 % Dossier de conception
 \include{partie_dossier_conception}
 
-% Logiques de description
-\include{partie2}
+% Vérification des tests
 
 % Conclusion
-\include{partie5}
+\include{partie_conclusion}
 
 % \begin{figure}[h!]
 %   \centerline{ \includegraphics[width=18cm]{images/sequenceurgeneral.jpg}}

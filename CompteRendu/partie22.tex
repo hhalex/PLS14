@@ -60,6 +60,17 @@ Job id     Name           User           Submission Date     S Queue
 \subsubsection{Plus d'informations sur les jobs actifs}
 \label{sec:plus-dinf-sur}
 
+\par Même si \texttt{oarstat} peut permettre d'accéder à beaucoup d'informations, certaines sont déjà accessibles via des variables d'environnement. Cela permet d'éviter de recevoir un tas d'informations dans lequel se trouve l'information précisé que l'on recherchait.
+
+\par Une variable d'environnement qui porte le nom \texttt{VARIABLE} dévoilera son contenu avec un dollar \texttt{\$} devant : \texttt{\$VARIABLE}.
+
+\par Voici une liste des principales variables d'environnement utilisées par \texttt{OAR} lorsqu'un job est actif :
+\begin{itemize}
+\item OAR\_JOBID : numéro du job.
+\item OAR\_WORKING\_DIRECTORY : répertoire initial de soumission.
+\item OAR\_NODEFILE : fichier contenant les noeuds utilisés. 
+\end{itemize}
+
 
 %%% Local Variables: 
 %%% mode: latex

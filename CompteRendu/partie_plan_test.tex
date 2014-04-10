@@ -1,0 +1,62 @@
+
+\section{Plan de test}
+\label{sec:plan-de-test}
+
+
+\par L'application devra remplir certains tests, dont voici la liste :
+
+\subsection{Affichage}
+\label{sec:affichage}
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}[h!]{|c|c|p{10cm}|}
+    \hline \\
+    1 & Boîte connexion MF & La boîte de connexion à la machine frontale doit s'afficher au lancement du programme. \\
+    2 & Boîte connexion MF & La boîte de connexion à la machine frontale doit disparaître si on appuie sur le bouton connexion, avec un login et un mot de passe valides.\\
+    3 & Boîte OAR & La boîte OAR doit s'afficher après une connexion avec succès à l'aide de la boîte de connexion MF. \\
+    4 & Boîte OAR & La boîte OAR doit afficher deux champs de saisie, 3 boutons, et une zone de texte à hauteur variable. \\
+    5 & Boîte OAR & La zone de texte de la boîte OAR doit afficher initialement le message d'accueil du shell distant auquel l'interface est connectée. \\
+
+    \hline    
+  \end{tabular}
+  \caption{Liste des tests d'affichage à remplir}
+  \label{tab:tests_affichage}
+\end{table}
+
+\subsection{Connexion}
+\label{sec:connexion}
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}[h!]{|c|c|p{10cm}|}
+\hline \\
+    10 & connexion à Ghome & affiche dans la console "Connecté à ghome.metz.supelec.fr sous le port 22"\\
+    11 & connexion à Term2 & affiche dans la console "Connecté à term2.metz.supelec.fr sous le port xx"\\
+\hline
+  \end{tabular}
+  \caption{Liste des tests de connexion à remplir}
+  \label{tab:tests_connexion}
+\end{table}
+
+\subsection{Fonctionnalités}
+\label{sec:fonctions}
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}[h!]{|c|p{3cm}|p{10cm}|}
+\hline \\
+    15 & Bouton Connexion & avec un login et un mot de passe corrects : fait disparaître la fenêtre de connexion et affiche la fenêtre d'allocation des noeuds.\\
+    16 & bouton "Allouer des noeuds" & affiche dans la zone de texte la réponse du shell distant à la commande "oarsub" envoyée grâce au clic sur le bouton.\\
+    17 & bouton "Tuer le job courant" & affiche dans la zone de texte la réponse du shell distant à la commande "oardel" envoyée grâce au clic sur le bouton.\\
+    18 & bouton "Infos le job courant" & affiche dans la zone de texte des informations relatives au job en cours d'execution.\\
+\hline
+  \end{tabular}
+  \caption{Liste des tests de connexion à remplir}
+  \label{tab:tests_connexion}
+\end{table}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "CompteRendu"
+%%% End: 
