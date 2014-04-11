@@ -11,116 +11,101 @@ import com.jcraft.jsch.Session;
 
 public class SSH {
 
-	String host;
-	String user;
-	String password;
-	Session session;
+    String host;
+    String user;
+    String password;
+    Session session;
 
-	static Channel channel;
-	static InputStream in;
-	static OutputStream out;
+    static Channel channel;
+    static InputStream in;
+    static OutputStream out;
 
-	public SSH (String host, String user, String password) {
+    public SSH (String host, String user, String password) {
+	this.host = host;
+	this.user = user;
+	this.password = password;
+	this.session = null;
+    }
 
-		this.host = host;
-		this.user = user;
-		this.password = password;
-		this.session = null;
+    public void connect() {
+	try{
+	    java.util.Properties config = new java.util.Properties(); 
+	    config.put("StrictHostKeyChecking", "no");
+
+	    JSch jsch = new JSch();
+	    this.session = jsch.getSession(user, host, 22);
+	    this.session.setPassword(password);
+	    this.session.setConfig(config);
+	    this.session.setServerAliveInterval(3600000);
+	    this.session.connect();
+	    System.out.println("Connecté à " + session.getHost() + " sous le port " + session.getPort());
+	}catch(Exception e){
+	    e.printStackTrace();
+	    System.out.println("Votre identifiant ou mot de passe ou l'adresse de la MF est erroné");
+	    System.out.println("--------------------");
 	}
+    }
 
-	public void connect() {
+    protected int getAssignedPort(int i, String host, int port){
 
-		try{
+	int assigned_port = 22;
 
-			java.util.Properties config = new java.util.Properties(); 
-			config.put("StrictHostKeyChecking", "no");
-
-			JSch jsch = new JSch();
-			this.session = jsch.getSession(user, host, 22);
-			this.session.setPassword(password);
-			this.session.setConfig(config);
-			this.session.setServerAliveInterval(3600000);
-			this.session.connect();
-			System.out.println("Connecté à " + session.getHost() + " sous le port " + session.getPort());
-
-		}catch(Exception e){
-			/*
-			 * e.printStackTrace();
-			 * System.out.println("Votre identifiant ou mot de passe ou l'adresse de la MF est erroné");
-			 * System.out.println("--------------------");
-			 */
-
-		}
-	}
-
-	protected int getAssignedPort(int i, String host, int port){
-
-		int assigned_port = 22;
-
-		try {
-
-			// Réglages du port de ghome afin de se connecter via ce serveur à term2
-
-			assigned_port = this.session.setPortForwardingL(i, host, port);
-
-		}catch (Exception e) {
-			System.out.println("Error " + e.getMessage());
-			e.printStackTrace();
-		}
-
-		return assigned_port;
-
-	}
-
-	public void deconnect(){
-
-		this.session.disconnect();
-		this.session = null;
-
-	}
-
-	public boolean sessionActive(){
-		return this.session != null && this.session.isConnected();
-	}
-
-	public void openChannel(String mode){
-		try{
-			channel = this.session.openChannel("shell");
-
-			in = channel.getInputStream();
-			out = channel.getOutputStream();
-
-			((ChannelShell) channel).setPtyType("vt102");
-			channel.connect();
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-
-	public void closeChannel(){
-		try {
-			channel.disconnect();
-		}
-		catch (Exception e) {
-			System.out.println("Error " + e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
-    public void sendCommand(String command){
 	try {
 
-	    out.write(command.getBytes());
-	    out.write("\n".getBytes());
-	    out.flush();
-		
+	    // Réglages du port de ghome afin de se connecter via ce serveur à term2
+	    assigned_port = this.session.setPortForwardingL(i, host, port);
+
+	}catch (Exception e) {
+	    System.out.println("Error " + e.getMessage());
+	    e.printStackTrace();
+	}
+
+	return assigned_port;
+    }
+
+    public void deconnect(){
+	this.session.disconnect();
+	this.session = null;
+    }
+
+    public boolean sessionActive(){
+	return this.session != null && this.session.isConnected();
+    }
+
+    public void openChannel(String mode){
+	try{
+	    channel = this.session.openChannel("shell");
+
+	    in = channel.getInputStream();
+	    out = channel.getOutputStream();
+
+	    ((ChannelShell) channel).setPtyType("vt102");
+	    channel.connect();
+	}catch(Exception e){
+	    e.printStackTrace();
+	}
+    }
+
+    public void closeChannel(){
+	try {
+	    channel.disconnect();
 	}
 	catch (Exception e) {
 	    System.out.println("Error " + e.getMessage());
 	    e.printStackTrace();
 	}
+    }
 
-	this.readReceivedMessage();
+    public void sendCommand(String command){
+	try {
+	    out.write(command.getBytes());
+	    out.write("\n".getBytes());
+	    out.flush();
+	}
+	catch (Exception e) {
+	    System.out.println("Error " + e.getMessage());
+	    e.printStackTrace();
+	}
     }
 
     public boolean hasMessage () {

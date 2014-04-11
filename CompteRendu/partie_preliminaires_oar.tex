@@ -1,4 +1,4 @@
-\par \emph{OAR} est une interface permettant de demander l'accès à des noeuds de calcul. L'intérêt d'une telle couche est de ne pas avoir à vérifier quels noeuds sont inutilisés, une commande spécifiant le type de tache à effectuer suffit : interactif ou par batch.
+\par \emph{OAR} est une interface permettant de demander l'accès à des noeuds de calcul (ou en anglais un \emph{resources manager}. L'intérêt d'une telle couche est de ne pas avoir à vérifier quels noeuds sont inutilisés, une commande spécifiant le type de tache à effectuer suffit : interactif ou par batch.
 
 
 \subsubsection{Utilisation basique}
@@ -9,7 +9,7 @@
 > oarsub -I
 \end{verbatim}
 
-\par On aura demandé un noeud pour 2 heures (le temps par défaut), en interactif, c'est-à-dire qu'une fois demandé et acquis, on utilise ce noeud comme on veut à l'aide du shell sur lequel on arrive.
+\par On aura demandé un noeud pour 2 heures (le temps par défaut), en interactif, c'est-à-dire qu'une fois demandé et acquis, on utilise ce noeud comme on veut à l'aide du \emph{shell} sur lequel on arrive.
 
 \par Par exemple, 
 \begin{verbatim}
@@ -32,7 +32,7 @@ sh16.grid.metz.supelec.fr
 > oarstat
 \end{verbatim}
 
-\par Dans notre exemple, cela renvoie quelquechose comme ça :
+\par Dans notre exemple, cela renvoie quelque chose comme ça :
 \begin{verbatim}
 -bash-4.2$ oarstat
 Job id     Name           User           Submission Date     S Queue

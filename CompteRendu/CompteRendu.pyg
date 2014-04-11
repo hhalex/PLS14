@@ -1,0 +1,18 @@
+  java.util.Properties config = new java.util.Properties();
+  config.put("StrictHostKeyChecking", "no");
+
+  JSch jsch = new JSch();
+
+  // Configure la session avec les informations de base
+  // Le username, le host, et le port, puis le password
+  Session session = jsch.getSession("user", "host", 22);
+  session.setPassword("password");
+  session.setConfig(config);
+
+  // Specifie la duree de la session
+  session.setServerAliveInterval(3600000);
+  session.connect();
+
+  // Message de confirmation envoye sur la sortie standard
+  System.out.println( "Connecté à " + session.getHost() +
+      " sous le port " + session.getPort() );

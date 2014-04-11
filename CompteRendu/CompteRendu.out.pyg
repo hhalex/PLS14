@@ -1,0 +1,22 @@
+\begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1,codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}, ,frame=single]
+  \PY{n}{java}\PY{o}{.}\PY{n+na}{util}\PY{o}{.}\PY{n+na}{Properties} \PY{n}{config} \PY{o}{=} \PY{k}{new} \PY{n}{java}\PY{o}{.}\PY{n+na}{util}\PY{o}{.}\PY{n+na}{Properties}\PY{o}{();}
+  \PY{n}{config}\PY{o}{.}\PY{n+na}{put}\PY{o}{(}\PY{l+s}{\PYZdq{}StrictHostKeyChecking\PYZdq{}}\PY{o}{,} \PY{l+s}{\PYZdq{}no\PYZdq{}}\PY{o}{);}
+
+  \PY{n}{JSch} \PY{n}{jsch} \PY{o}{=} \PY{k}{new} \PY{n}{JSch}\PY{o}{();}
+
+  \PY{c+c1}{// Configure la session avec les informations de base}
+  \PY{c+c1}{// Le username, le host, et le port, puis le password}
+  \PY{n}{Session} \PY{n}{session} \PY{o}{=} \PY{n}{jsch}\PY{o}{.}\PY{n+na}{getSession}\PY{o}{(}\PY{l+s}{\PYZdq{}user\PYZdq{}}\PY{o}{,} \PY{l+s}{\PYZdq{}host\PYZdq{}}\PY{o}{,} \PY{l+m+mi}{22}\PY{o}{);}
+  \PY{n}{session}\PY{o}{.}\PY{n+na}{setPassword}\PY{o}{(}\PY{l+s}{\PYZdq{}password\PYZdq{}}\PY{o}{);}
+  \PY{n}{session}\PY{o}{.}\PY{n+na}{setConfig}\PY{o}{(}\PY{n}{config}\PY{o}{);}
+
+  \PY{c+c1}{// Specifie la duree de la session}
+  \PY{n}{session}\PY{o}{.}\PY{n+na}{setServerAliveInterval}\PY{o}{(}\PY{l+m+mi}{3600000}\PY{o}{);}
+  \PY{n}{session}\PY{o}{.}\PY{n+na}{connect}\PY{o}{();}
+
+ \PY{c+c1}{// Message de confirmation envoye sur la sortie standard}
+  \PY{n}{System}\PY{o}{.}\PY{n+na}{out}\PY{o}{.}\PY{n+na}{println}\PY{o}{(} \PY{l+s}{\PYZdq{Connecté à} \PYZdq{}} \PY{o}{+} \PY{n}{session}\PY{o}{.}\PY{n+na}{getHost}\PY{o}{()} \PY{o}{+}
+      \PY{l+s}{\PYZdq{sous le port} \PYZdq{}} \PY{o}{+} \PY{n}{session}\PY{o}{.}\PY{n+na}{getPort}\PY{o}{()} \PY{o}{);}
+
+
+ \end{Verbatim}
