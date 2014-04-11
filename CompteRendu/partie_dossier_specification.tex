@@ -11,7 +11,7 @@
 \item travailler sur des fichiers I/O.
 \end{itemize}
 
-\par L’architecture générale du projet est donnée à la figure~\ref{fig:schema_global} ci-dessous. L’idée est d’agréger une couche logicielle à l’environnement \emph{OAR}, évitant ainsi l'allocation de noeuds via des commandes \emph{shell}.  Pour de plus amples informations sur \emph{OAR} et les commandes \emph{shell} nécessaires afin de se connecter et d’allouer des nœuds de calcul, vous vous référerez à la partie \ref{sec:oar-gestionnaire-res}.
+\par L’architecture générale du projet est donnée à la figure \vref{fig:schema_global} ci-dessous. L’idée est d’agréger une couche logicielle à l’environnement \emph{OAR}, évitant ainsi l'allocation de noeuds via des commandes \emph{shell}.  Pour de plus amples informations sur \emph{OAR} et les commandes \emph{shell} nécessaires afin de se connecter et d’allouer des nœuds de calcul, vous vous référerez à la partie \vref{sec:oar-gestionnaire-res}.
 
 \par Le but principal est d’allouer des nœuds et de récupérer un fichier .txt contenant la description détaillée des noeuds alloués. À savoir les machines allouées, leur noms, la date et l'heure d'allocation, la fin d'allocation, l'identifiant du job, et bien d'autres. Ce fichier devra être présenté à l'utilisateur, lorsque celui-ci en fait la demande, et mis à jour à chaque modification du job.
 \begin{figure}[h!]

@@ -2,6 +2,17 @@
 
 \par Le problème principal de la connexion SSH est d'établir d'une part la connexion avec authentification, et d'autre part de la maintenir active tout en communiquant avec la machine distante, via un canal actif, c'est là tout l'objet de \emph{JSch}.
 
+\subsubsection{Quelques concepts}
+\label{sec:quelques-concepts}
+
+\par Le package \emph{JSch} (pour Java Secure channel) est donc un objet composé de méthodes permettant de communiquer avec un serveur en SSH. Il est intéressant de comprendre comment se déroule une connexion SSH ``classique'' afin de mieux cerner l'utilité de certaines méthodes de \emph{JSch}.
+\par SSH (pour Secure Shell ) est avant tout un protocole de communication. Un programme du même nom existe et permet d'utiliser ce protocole, mais d'autres implémentations existent, comme par exemple \emph{OpenSSH}. Cette communication s'effectue par authentification, à l'aide de clés publiques/privées (RSA) ou bien par mot de passe et login. Il existe deux versions du protocole SSH, la 1.0 et la 2.0. La dernière est la plus utilisée car plus sécurisée, et est implémentée par \emph{JSch}.
+\par Une fois l'authentification effectuée, il faut un moyen de maintenir la connexion active, c'est là l'intérêt des sessions. Les sessions interviennent souvent en informatique; par exemple, lors d'une connexion simple sur un ordinateur à l'aide d'un nom d'utilisateur et d'un mot de passe. On peut également citer l'authentification sur un site web pour être identifié. Elles permettent de maintenir une connexion active entre le visiteur et le serveur. La session est généralement caractérisée par une durée limitée, et est stockée sur le serveur siège de la connexion (cela permet d'éviter une usurpation facile de session sur les sites webs par exemple). 
+
+\par Une connexion active peut permettre un échange de données, mais la session n'étant qu'une information, elle ne permet donc pas cet échange d'elle même. Pour rendre possible l'envoi et la réception d'informations, il faut un canal, représenté par l'objet \texttt{Channel} dans notre cas.
+
+\par Nous allons donc présenter \emph{JSch} avec un exemple, celui de notre projet, en expliquant les concepts inhabituels utilisés.
+
 \subsubsection{Etablissement d'une connexion}
 \label{sec:etabl-dune-conn}
 
