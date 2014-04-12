@@ -1,0 +1,67 @@
+\par \emph{OAR} est une interface permettant de demander l'accès à des noeuds de calcul. L'intérêt d'une telle couche est de ne pas avoir à vérifier quels noeuds sont inutilisés, une commande spécifiant le type de tache à effectuer suffit : interactif ou par batch.
+
+
+\subsubsection{Utilisation basique}
+\label{subsec:utilisation-basique}
+
+\par \emph{OAR} peut être utilisé simplement à l'aide de la commande :
+\begin{verbatim}
+> oarsub -I
+\end{verbatim}
+
+\par On aura demandé un noeud pour 2 heures (le temps par défaut), en interactif, c'est-à-dire qu'une fois demandé et acquis, on utilise ce noeud comme on veut à l'aide du shell sur lequel on arrive.
+
+\par Par exemple, 
+\begin{verbatim}
+-bash-4.2$ oarsub -I
+[ADMISSION RULE] Set default walltime to 7200.
+[ADMISSION RULE] Modify resource description with type constraints
+OAR_JOB_ID=1131
+Interactive mode : waiting...
+Starting...
+
+Connect to OAR job 1131 via the node sh16
+-bash-4.2$ hostname
+sh16.grid.metz.supelec.fr
+\end{verbatim}
+\par On a ainsi accès au noeud demandé, via sh16 pendant 2 heures. Le job représente notre commande, et est identifié par le numéro 1131. Ce numéro va permettre de le manipuler, d'avoir des informations dessus, et éventuellement de le supprimer.
+\par On note bien qu'une fois le job acquis, on est connecté sur le noeud sh16 (ce qu'on sait grâce à la commande \texttt{hostname})
+
+\par On peut avoir plus d'informations sur les jobs actifs :
+\begin{verbatim}
+> oarstat
+\end{verbatim}
+
+\par Dans notre exemple, cela renvoie quelquechose comme ça :
+\begin{verbatim}
+-bash-4.2$ oarstat
+Job id     Name           User           Submission Date     S Queue
+---------- -------------- -------------- ------------------- - ----------
+1126                      munozperez_jua 2014-02-21 15:57:17 R default   
+1132                      careil_ale     2014-02-21 16:29:29 R default   
+\end{verbatim}
+
+\par D'autres options bien utiles sont disponibles et permettent d'obtenir des informations détaillées à propos des jobs, en voici une liste non exhaustive : \\
+
+\begin{table}[h!]
+  \centering
+
+  \begin{tabular}{ll}
+    \texttt{-j id\_job} & Permet de spécifier le job qu'on veut étudier. \\
+    \texttt{-f} & Affiche la totalité des informations disponibles sur le job (ou tous, si aucun job n'est spécifié).\\
+    \texttt{-s} & Affiche l'état d'un job (doit être utilisé avec \texttt{-j}).\\
+  \end{tabular}
+
+  \caption{Résumé des options de oarstat}
+  
+\end{table}
+
+
+\subsubsection{Plus d'informations sur les jobs actifs}
+\label{sec:plus-dinf-sur}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "CompteRendu"
+%%% End: 

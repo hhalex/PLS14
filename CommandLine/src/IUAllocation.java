@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -46,6 +47,8 @@ public class IUAllocation extends InterfaceGraphiqueUtilisateur {
 	this.frame = new JFrame("Allocation de noeuds de calcul");
 	this.frame.setSize(800,500);
 	this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	ImageIcon logo = new ImageIcon(getClass().getResource("logo_pls14_rond.png"));
+	this.frame.setIconImage(logo.getImage());
 
 	// Création des éléments de la fenêtre pour l'allocation des noeuds
 

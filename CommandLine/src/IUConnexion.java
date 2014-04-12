@@ -1,10 +1,13 @@
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,156 +21,165 @@ import javax.swing.SwingUtilities;
 
 public class IUConnexion extends InterfaceGraphiqueUtilisateur {
 
-    private JPanel panel_machine;
-    private JPanel panel_login;
-    private JPanel panel_mdp;
-    private JPanel panel_bouton;
-    private JScrollPane panel_jta;
+	private JPanel panel_machine;
+	private JPanel panel_login;
+	private JPanel panel_mdp;
+	private JPanel panel_bouton;
+	private JScrollPane panel_jta;
 
-    static private JTextArea jta_connexion;
+	static private JTextArea jta_connexion;
 
-    private JLabel label_machine;
-    private static JTextField jtf_machine;
-    private JLabel label_login;
-    private static JTextField jtf_login;
-    private JLabel label_mdp;
-    private static JTextField jtf_mdp;
+	private JLabel label_machine;
+	private static JTextField jtf_machine;
+	private JLabel label_login;
+	private static JTextField jtf_login;
+	private JLabel label_mdp;
+	private static JTextField jtf_mdp;
 
-    private JButton bouton_connect;
+	private JButton bouton_connect;
 
-    public IUConnexion() {
+	public IUConnexion() {
 
-	//Création d'une fenêtre de titre "
-	this.frame = new JFrame("Connexion MF Supélec");
-	this.frame.setSize(500,130);
-	this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//Création d'une fenêtre de titre "
+		this.frame = new JFrame("Connexion MF Supélec");
+		this.frame.setSize(500,130);
+		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-	// Création des éléments de la fenêtre de connexion à ghome
-
-	bouton_connect = new JButton ("Connexion");
-
-	this.label_machine = new JLabel("Adresse machine : ");
-	jtf_machine = new JTextField("ghome.metz.supelec.fr");
-
-	this.label_login = new JLabel("Login : ");
-	jtf_login = new JTextField("");
-
-	this.label_mdp = new JLabel("Password : ");
-	jtf_mdp = new JPasswordField("");
-
-	this.jta_connexion = new JTextArea(3,0);
-
-	//Création de la structure de la boîte pour placer les éléments
-
-	this.panel_machine = new JPanel();
-	this.panel_login = new JPanel();
-	this.panel_mdp = new JPanel();
-	this.panel_bouton = new JPanel();
-	this.panel_jta = new JScrollPane();
-	this.panelConteneur = new JPanel((new GridLayout(0,2)));
-
-	//Placement des composants dans la fenêtre préparée
-
-	this.panel_machine.setLayout(new BoxLayout(panel_machine, BoxLayout.LINE_AXIS));
-	this.panel_machine.add(label_machine);
-	this.panel_machine.add(jtf_machine);
-
-	this.panel_login.setLayout(new BoxLayout(panel_login, BoxLayout.LINE_AXIS));
-	this.panel_login.add(label_login);
-	this.panel_login.add(jtf_login);
-
-	this.panel_mdp.setLayout(new BoxLayout(panel_mdp, BoxLayout.LINE_AXIS));
-	this.panel_mdp.add(label_mdp);
-	this.panel_mdp.add(jtf_mdp);
-
-	this.panel_bouton.setLayout(new BoxLayout(panel_bouton, BoxLayout.LINE_AXIS));
-	this.panel_bouton.add(bouton_connect);
-
-	this.panel_jta.add(jta_connexion);
-
-	this.panelConteneur.setLayout(new BoxLayout(this.panelConteneur, BoxLayout.PAGE_AXIS));
-
-	this.panelConteneur.add(panel_machine);
-	this.panelConteneur.add(panel_login);
-	this.panelConteneur.add(panel_mdp);
-	this.panelConteneur.add(panel_bouton);
-	this.panelConteneur.add(jta_connexion);
-
-	this.frame.setContentPane(this.panelConteneur);               
-	this.frame.setVisible(true);
-	this.frame.pack();
-
-	// Bouton de connexion : listener click
-
-	this.bouton_connect.addActionListener(new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent eventBouton) {
-		    callbackBoutonConnexionValidationGhome();}
-	    });
-
-	// Bouton de connexion : listener touche
-
-	this.bouton_connect.addKeyListener(new KeyAdapter() {
-		@Override
-		public void keyPressed(KeyEvent e) {
-		    int key = e.getKeyCode();
-		    if (key == KeyEvent.VK_ENTER) {
-			callbackBoutonConnexionValidationGhome();
-		    }
+		try {
+			ClassLoader cl = this.getClass().getClassLoader();
+			ImageIcon programIcon = new ImageIcon(cl.getResource("logo_pls14_carre.png"));
+			this.frame.setIconImage(programIcon.getImage());
+			System.out.println("oui ou non ");
+		} catch (Exception whoJackedMyIcon) {
+			System.out.println("Could not load program icon.");
 		}
-	    });
-    }
 
-    private void callbackBoutonConnexionValidationGhome(){
+		// Création des éléments de la fenêtre de connexion à ghome
 
-	System.out.println(
-	    "Connexion à la machine frontale " + jtf_machine.getText() + " via l'utilisateur " + 
-	    jtf_login.getText() + " ...");
+		bouton_connect = new JButton ("Connexion");
 
-	SSH ssh_ghome = new SSH(jtf_machine.getText(), jtf_login.getText(), jtf_mdp.getText());
-	ssh_ghome.connect();
+		this.label_machine = new JLabel("Adresse machine : ");
+		jtf_machine = new JTextField("ghome.metz.supelec.fr");
 
-	if (!ssh_ghome.sessionActive()) {
-	    System.out.println("Votre identifiant ou mot de passe ou l'adresse de la MF est erroné");
-	    System.out.println("--------------------");
-	}else{
-	    this.ssh = ssh_ghome;
-	    callbackBoutonConnexionValidationTerm2();
-	};
-    }
+		this.label_login = new JLabel("Login : ");
+		jtf_login = new JTextField("");
 
-    private void callbackBoutonConnexionValidationTerm2(){
+		this.label_mdp = new JLabel("Password : ");
+		jtf_mdp = new JPasswordField("");
 
-	SSH_IUAllocation sshOAR = new SSH_IUAllocation("term2.grid.metz.supelec.fr", jtf_login.getText(), jtf_mdp.getText());
-	sshOAR.connectFromSSH(this.ssh);
+		this.jta_connexion = new JTextArea(3,0);
 
-	if (!sshOAR.sessionActive()) {
-	    System.out.println("Votre identifiant ou mot de passe ou l'adresse de la MF est erroné");
-	    System.out.println("--------------------");
-	}else{		
-	    this.closeGUI();
-	    sshOAR.openChannel("shell");
-	    passerelleIU(sshOAR);
-	};
-    }
+		//Création de la structure de la boîte pour placer les éléments
 
-    private void passerelleIU(SSH_IUAllocation sshOAR) {
+		this.panel_machine = new JPanel();
+		this.panel_login = new JPanel();
+		this.panel_mdp = new JPanel();
+		this.panel_bouton = new JPanel();
+		this.panel_jta = new JScrollPane();
+		this.panelConteneur = new JPanel((new GridLayout(0,2)));
 
-	System.out.println("Bonjour " + jtf_login.getText() + " !");
+		//Placement des composants dans la fenêtre préparée
 
-	IUAllocation oarNoeuds = new IUAllocation(sshOAR);
-	Timer timer = oarNoeuds.createRefreshTimer ();
-	timer.start ();
+		this.panel_machine.setLayout(new BoxLayout(panel_machine, BoxLayout.LINE_AXIS));
+		this.panel_machine.add(label_machine);
+		this.panel_machine.add(jtf_machine);
 
-    }
+		this.panel_login.setLayout(new BoxLayout(panel_login, BoxLayout.LINE_AXIS));
+		this.panel_login.add(label_login);
+		this.panel_login.add(jtf_login);
 
-    public void closeGUI() {
-	this.frame.setVisible(false);
-    }
+		this.panel_mdp.setLayout(new BoxLayout(panel_mdp, BoxLayout.LINE_AXIS));
+		this.panel_mdp.add(label_mdp);
+		this.panel_mdp.add(jtf_mdp);
+
+		this.panel_bouton.setLayout(new BoxLayout(panel_bouton, BoxLayout.LINE_AXIS));
+		this.panel_bouton.add(bouton_connect);
+
+		this.panel_jta.add(jta_connexion);
+
+		this.panelConteneur.setLayout(new BoxLayout(this.panelConteneur, BoxLayout.PAGE_AXIS));
+
+		this.panelConteneur.add(panel_machine);
+		this.panelConteneur.add(panel_login);
+		this.panelConteneur.add(panel_mdp);
+		this.panelConteneur.add(panel_bouton);
+		this.panelConteneur.add(jta_connexion);
+
+		this.frame.setContentPane(this.panelConteneur);               
+		this.frame.setVisible(true);
+		this.frame.pack();
+
+		// Bouton de connexion : listener click
+
+		this.bouton_connect.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent eventBouton) {
+				callbackBoutonConnexionValidationGhome();}
+		});
+
+		// Bouton de connexion : listener touche
+
+		this.bouton_connect.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int key = e.getKeyCode();
+				if (key == KeyEvent.VK_ENTER) {
+					callbackBoutonConnexionValidationGhome();
+				}
+			}
+		});
+	}
+
+	private void callbackBoutonConnexionValidationGhome(){
+
+		System.out.println(
+				"Connexion à la machine frontale " + jtf_machine.getText() + " via l'utilisateur " + 
+						jtf_login.getText() + " ...");
+
+		SSH ssh_ghome = new SSH(jtf_machine.getText(), jtf_login.getText(), jtf_mdp.getText());
+		ssh_ghome.connect();
+
+		if (!ssh_ghome.sessionActive()) {
+			System.out.println("Votre identifiant ou mot de passe ou l'adresse de la MF est erroné");
+			System.out.println("--------------------");
+		}else{
+			this.ssh = ssh_ghome;
+			callbackBoutonConnexionValidationTerm2();
+		};
+	}
+
+	private void callbackBoutonConnexionValidationTerm2(){
+
+		SSH_IUAllocation sshOAR = new SSH_IUAllocation("term2.grid.metz.supelec.fr", jtf_login.getText(), jtf_mdp.getText());
+		sshOAR.connectFromSSH(this.ssh);
+
+		if (!sshOAR.sessionActive()) {
+			System.out.println("Votre identifiant ou mot de passe ou l'adresse de la MF est erroné");
+			System.out.println("--------------------");
+		}else{		
+			this.closeGUI();
+			sshOAR.openChannel("shell");
+			passerelleIU(sshOAR);
+		};
+	}
+
+	private void passerelleIU(SSH_IUAllocation sshOAR) {
+
+		System.out.println("Bonjour " + jtf_login.getText() + " !");
+
+		IUAllocation oarNoeuds = new IUAllocation(sshOAR);
+		Timer timer = oarNoeuds.createRefreshTimer ();
+		timer.start ();
+
+	}
+
+	public void closeGUI() {
+		this.frame.setVisible(false);
+	}
 
 
-    public static void main (String args[]) {
+	public static void main (String args[]) {
 
-	IUConnexion boite = new IUConnexion();
-    }
+		IUConnexion boite = new IUConnexion();
+	}
 }
