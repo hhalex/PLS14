@@ -18,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 
 public class IUConnexion extends InterfaceGraphiqueUtilisateur {
 
@@ -25,9 +26,9 @@ public class IUConnexion extends InterfaceGraphiqueUtilisateur {
 	private JPanel panel_login;
 	private JPanel panel_mdp;
 	private JPanel panel_bouton;
-	private JScrollPane panel_jta;
+	//private JScrollPane panel_jta;
 
-	static private JTextArea jta_connexion;
+	//static private JTextArea jta_connexion;
 
 	private JLabel label_machine;
 	private static JTextField jtf_machine;
@@ -45,15 +46,6 @@ public class IUConnexion extends InterfaceGraphiqueUtilisateur {
 		this.frame.setSize(500,130);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		try {
-			ClassLoader cl = this.getClass().getClassLoader();
-			ImageIcon programIcon = new ImageIcon(cl.getResource("logo_pls14_carre.png"));
-			this.frame.setIconImage(programIcon.getImage());
-			System.out.println("oui ou non ");
-		} catch (Exception whoJackedMyIcon) {
-			System.out.println("Could not load program icon.");
-		}
-
 		// Création des éléments de la fenêtre de connexion à ghome
 
 		bouton_connect = new JButton ("Connexion");
@@ -67,7 +59,7 @@ public class IUConnexion extends InterfaceGraphiqueUtilisateur {
 		this.label_mdp = new JLabel("Password : ");
 		jtf_mdp = new JPasswordField("");
 
-		this.jta_connexion = new JTextArea(3,0);
+		//this.jta_connexion = new JTextArea(3,0);
 
 		//Création de la structure de la boîte pour placer les éléments
 
@@ -75,7 +67,7 @@ public class IUConnexion extends InterfaceGraphiqueUtilisateur {
 		this.panel_login = new JPanel();
 		this.panel_mdp = new JPanel();
 		this.panel_bouton = new JPanel();
-		this.panel_jta = new JScrollPane();
+		//this.panel_jta = new JScrollPane();
 		this.panelConteneur = new JPanel((new GridLayout(0,2)));
 
 		//Placement des composants dans la fenêtre préparée
@@ -95,15 +87,16 @@ public class IUConnexion extends InterfaceGraphiqueUtilisateur {
 		this.panel_bouton.setLayout(new BoxLayout(panel_bouton, BoxLayout.LINE_AXIS));
 		this.panel_bouton.add(bouton_connect);
 
-		this.panel_jta.add(jta_connexion);
+		//this.panel_jta.add(jta_connexion);
 
 		this.panelConteneur.setLayout(new BoxLayout(this.panelConteneur, BoxLayout.PAGE_AXIS));
+		this.panelConteneur.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		this.panelConteneur.add(panel_machine);
 		this.panelConteneur.add(panel_login);
 		this.panelConteneur.add(panel_mdp);
 		this.panelConteneur.add(panel_bouton);
-		this.panelConteneur.add(jta_connexion);
+		//this.panelConteneur.add(jta_connexion);
 
 		this.frame.setContentPane(this.panelConteneur);               
 		this.frame.setVisible(true);
@@ -175,11 +168,5 @@ public class IUConnexion extends InterfaceGraphiqueUtilisateur {
 
 	public void closeGUI() {
 		this.frame.setVisible(false);
-	}
-
-
-	public static void main (String args[]) {
-
-		IUConnexion boite = new IUConnexion();
 	}
 }

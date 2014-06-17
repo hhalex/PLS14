@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 
 public class IUAllocation extends InterfaceGraphiqueUtilisateur {
@@ -47,8 +48,6 @@ public class IUAllocation extends InterfaceGraphiqueUtilisateur {
 	this.frame = new JFrame("Allocation de noeuds de calcul");
 	this.frame.setSize(800,500);
 	this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	ImageIcon logo = new ImageIcon(getClass().getResource("logo_pls14_rond.png"));
-	this.frame.setIconImage(logo.getImage());
 
 	// Création des éléments de la fenêtre pour l'allocation des noeuds
 
@@ -98,6 +97,7 @@ public class IUAllocation extends InterfaceGraphiqueUtilisateur {
 
 
 	this.panelConteneur.setLayout(new BoxLayout(this.panelConteneur, BoxLayout.PAGE_AXIS));
+	this.panelConteneur.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 	this.panelConteneur.add(panel_nbNoeuds);
 	this.panelConteneur.add(panel_tpsAllocation);
