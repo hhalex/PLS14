@@ -1,4 +1,5 @@
-\par \emph{OAR} est une interface permettant de demander l'accès à des noeuds de calcul (ou en anglais un \emph{resources manager}. L'intérêt d'une telle couche est de ne pas avoir à vérifier quels noeuds sont inutilisés, une commande spécifiant le type de tache à effectuer suffit : interactif ou par batch.
+\par \emph{OAR} est une interface permettant de demander l'accès à des noeuds de calcul (ou en anglais un \emph{resource manager}. L'intérêt paraît évident, on ne traite pas directement avec chaque noeud pour savoir s'il est disponible, car il faudrait alors que le client ait connaissance de tous les noeuds. Tous les clients devraient être mis à jour à chaque fois que les ressources changent (certains noeuds sont enlevés et d'autres ajoutés). Si on crée un intermédiaire chargé de gérer des demandes, c'est à lui seul de choisir les noeuds à donner, en fonction de la priorité du demandeur, de la nature des noeuds...
+Le fonctionnement de \emph{OAR} est donc analogue à celui d'un gestionnaire de base de données: on envoie une requête au serveur qui nous renvoie le résultat souhaité, à savoir des données. On obtient donc les noeuds souhaités grâce à une commande spécifiant le type de tâche à effectuer: interactif ou par batch.
 
 
 \subsubsection{Utilisation basique}
@@ -46,10 +47,12 @@ Job id     Name           User           Submission Date     S Queue
 \begin{table}[h!]
   \centering
 
-  \begin{tabular}{ll}
+  \begin{tabular}{|lp{10cm}|}
+\hline
     \texttt{-j id\_job} & Permet de spécifier le job qu'on veut étudier. \\
     \texttt{-f} & Affiche la totalité des informations disponibles sur le job (ou tous, si aucun job n'est spécifié).\\
     \texttt{-s} & Affiche l'état d'un job (doit être utilisé avec \texttt{-j}).\\
+\hline
   \end{tabular}
 
   \caption{Résumé des options utiles de oarstat}
@@ -66,9 +69,9 @@ Job id     Name           User           Submission Date     S Queue
 
 \par Voici une liste des principales variables d'environnement utilisées par \texttt{OAR} lorsqu'un job est actif :
 \begin{itemize}
-\item OAR\_JOBID : numéro du job.
-\item OAR\_WORKING\_DIRECTORY : répertoire initial de soumission.
-\item OAR\_NODEFILE : fichier contenant les noeuds utilisés. 
+\item \texttt{OAR\_JOBID} : numéro du job.
+\item \texttt{OAR\_WORKING\_DIRECTORY} : répertoire initial de soumission.
+\item \texttt{OAR\_NODEFILE} : fichier contenant les noeuds utilisés. 
 \end{itemize}
 
 

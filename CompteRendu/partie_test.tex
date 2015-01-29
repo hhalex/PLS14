@@ -1,1 +1,67 @@
+\section{Validation des tests}
+\label{sec:validation-tests}
+
+\par Après la spécification et la réalisation de l'application, il est grand temps de vérifier le respect des tests établis précédemment.
+
+\subsection{Affichage}
+\label{sec:affichage}
+
+\par La Boîte connexion MF correspond à l'IU exécutée lors du lancement de l'application. La Boîte OAR quant à elle est l'IU exécutée lorsque la connexion à \emph{term2} est valide.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}[h!]{|c|c|c|p{7cm}|}
+    \hline
+    \checkmark & 1 & Boîte connexion MF & La boîte de connexion à la machine frontale doit s'afficher au lancement du programme. \\
+    \checkmark & 2 & Boîte connexion MF & La boîte de connexion à la machine frontale doit disparaître lors de l'appuie sur le bouton connexion, avec une adresse machine frontale, un login et un mot de passe valides.\\
+    \checkmark & 3 & Boîte OAR & La boîte OAR doit s'afficher après une connexion réussie et en même temps que la boîte de connexion MF disparaît. \\
+    \checkmark & 4 & Boîte OAR & La boîte OAR doit afficher deux champs de saisie, 3 boutons (Tuer le job actif, Allouer les noeuds, Infos sur le job actif), et une zone de texte à hauteur variable. \\
+    \checkmark & 5 & Boîte OAR & La zone de texte de la boîte OAR doit afficher initialement le message d'accueil du \emph{shell} distant auquel l'interface est connectée. \\
+
+    \hline    
+  \end{tabular}
+  \caption{Liste des tests d'affichage à valider}
+  \label{tab:tests_affichage}
+\end{table}
+
+\subsection{Connexion}
+\label{sec:connexion}
+
+\par Ce type de tests permettent de valider la connexion aux machines \emph{ghome} et \emph{term2} via l'impression dans la console Java d'un message.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}[h!]{|c|c|c|p{7cm}|}
+    \hline 
+    \checkmark & 6 & Connexion à \emph{ghome} & Affichage dans la console "Connecté à ghome.metz.supelec.fr sous le port 22"\\
+    \checkmark & 7 & Connexion à \emph{term2} & Affichage dans la console "Connecté à term2.metz.supelec.fr sous le port xx"\\
+    \hline
+  \end{tabular}
+  \caption{Liste des tests de connexion à valider}
+  \label{tab:tests_connexion}
+\end{table}
+
+\subsection{Fonctionnalités}
+\label{sec:fonctions}
+
+\par Dans cette catégorie nous retrouvons les tests concernant les fonctions effectuées par les divers boutons.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}[h!]{|c|c|p{3cm}|p{7cm}|}
+    \hline 
+    \checkmark & 8 & Bouton "Connexion" & Avec un login et un mot de passe corrects fait disparaître la fenêtre de connexion et affiche la fenêtre d'allocation des noeuds.\\
+    \checkmark & 9 & Bouton "Allouer des noeuds" & Affiche dans la zone de texte la réponse du \emph{shell} distant à la commande "oarsub" envoyée grâce au clic sur le bouton.\\
+    \checkmark & 10 & Bouton "Tuer le job actif" & Affiche dans la zone de texte la réponse du \emph{shell} distant à la commande "oardel" envoyée grâce au clic sur le bouton.\\
+    \checkmark & 11 & Bouton "Infos sur le job actif" & Affiche dans la zone de texte des informations relatives au job en cours d'execution.\\
+    \hline
+  \end{tabular}
+  \caption{Liste des tests de connexion à remplir}
+  \label{tab:tests_connexion}
+\end{table}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "CompteRendu"
+%%% End: 
 

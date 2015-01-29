@@ -11,8 +11,8 @@
 
 \begin{table}[h!]
   \centering
-  \begin{tabular}[h!]{|c|c|p{10cm}|}
-    \hline \\
+  \begin{tabular}{|c|c|p{10cm}|}
+    \hline
     1 & Boîte connexion MF & La boîte de connexion à la machine frontale doit s'afficher au lancement du programme. \\
     2 & Boîte connexion MF & La boîte de connexion à la machine frontale doit disparaître lors de l'appuie sur le bouton connexion, avec une adresse machine frontale, un login et un mot de passe valides.\\
     3 & Boîte OAR & La boîte OAR doit s'afficher après une connexion réussie et en même temps que la boîte de connexion MF disparaît. \\
@@ -33,7 +33,7 @@
 \begin{table}[h!]
   \centering
   \begin{tabular}[h!]{|c|c|p{10cm}|}
-\hline \\
+\hline 
     6 & Connexion à \emph{ghome} & Affichage dans la console "Connecté à ghome.metz.supelec.fr sous le port 22"\\
     7 & Connexion à \emph{term2} & Affichage dans la console "Connecté à term2.metz.supelec.fr sous le port xx"\\
 \hline
@@ -48,15 +48,15 @@
 \par Dans cette catégorie nous retrouvons les tests concernant les fonctions effectuées par les divers boutons.
 
 \begin{table}[h!]
-  \centering
+  \centerline{
   \begin{tabular}[h!]{|c|p{3cm}|p{10cm}|}
-\hline \\
+\hline 
     8 & Bouton "Connexion" & Avec un login et un mot de passe corrects fait disparaître la fenêtre de connexion et affiche la fenêtre d'allocation des noeuds.\\
     9 & Bouton "Allouer des noeuds" & Affiche dans la zone de texte la réponse du \emph{shell} distant à la commande "oarsub" envoyée grâce au clic sur le bouton.\\
     10 & Bouton "Tuer le job actif" & Affiche dans la zone de texte la réponse du \emph{shell} distant à la commande "oardel" envoyée grâce au clic sur le bouton.\\
     11 & Bouton "Infos sur le job actif" & Affiche dans la zone de texte des informations relatives au job en cours d'execution.\\
 \hline
-  \end{tabular}
+  \end{tabular}}
   \caption{Liste des tests de connexion à remplir}
   \label{tab:tests_connexion}
 \end{table}
