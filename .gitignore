@@ -4,6 +4,14 @@ CompteRendu/*.pdf
 *.log
 *.idx
 .#*
+*.blg
+*.bbl
+*.bcf
+*.lot
+*.lof
+*.dvi
+*.jar
+*.zip
 *.toc
 *.synctex.gz
 *.fmt

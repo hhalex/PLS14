@@ -1,0 +1,123 @@
+\par \emph{JSch} est un package Java permettant d'effectuer des connexions SSH. Il permet de faire à peu près tout ce qu'on lui demande, mais ce dernier manque cruellement de documentation. Afin de mieux comprendre son fonctionnement, nous avons été amenés à utiliser la méthode du \emph{test and learn} en comparant des morceaux de code déjà existants. Après un certain temps de pratique, son utilisation devient cependant assez compréhensible.
+
+\par Le problème principal de la connexion SSH est d'établir d'une part la connexion avec authentification, et d'autre part de la maintenir active tout en communiquant avec la machine distante, via un canal actif, c'est là tout l'objet de \emph{JSch}.
+
+\subsubsection{Quelques concepts}
+\label{sec:quelques-concepts}
+
+\par Le package \emph{JSch} (pour Java Secure channel) est donc un objet composé de méthodes permettant de communiquer avec un serveur en SSH. Il est intéressant de comprendre comment se déroule une connexion SSH ``classique'' afin de mieux cerner l'utilité de certaines méthodes de \emph{JSch}.
+\par SSH (pour Secure Shell ) est avant tout un protocole de communication. Un programme du même nom existe et permet d'utiliser ce protocole, mais d'autres implémentations existent, comme par exemple \emph{OpenSSH}. Cette communication s'effectue par authentification, à l'aide de clés publiques/privées (RSA) ou bien par mot de passe et login. Il existe deux versions du protocole SSH, la 1.0 et la 2.0. La dernière est la plus utilisée car plus sécurisée, et est implémentée par \emph{JSch}.
+\par Une fois l'authentification effectuée, il faut un moyen de maintenir la connexion active, c'est là l'intérêt des sessions. Les sessions interviennent souvent en informatique; par exemple, lors d'une connexion simple sur un ordinateur à l'aide d'un nom d'utilisateur et d'un mot de passe. On peut également citer l'authentification sur un site web pour être identifié. Elles permettent de maintenir une connexion active entre le visiteur et le serveur. La session est généralement caractérisée par une durée limitée, et est stockée sur le serveur siège de la connexion (cela permet d'éviter une usurpation facile de session sur les sites webs par exemple). 
+
+\par Une connexion active peut permettre un échange de données, mais la session n'étant qu'une information, elle ne permet donc pas cet échange d'elle même. Pour rendre possible l'envoi et la réception d'informations, il faut un canal, représenté par l'objet \texttt{Channel} dans notre cas.
+
+\par Nous allons donc présenter \emph{JSch} avec un exemple, celui de notre projet, en expliquant les concepts inhabituels utilisés.
+
+\subsubsection{Etablissement d'une connexion}
+\label{sec:etabl-dune-conn}
+
+\par Commençons donc par établir une connexion à l'aide d'une session (et donc d'un objet Session) :
+
+\begin{minted}[frame=single,linenos,mathescape]{java}
+  java.util.Properties config = new java.util.Properties(); 
+  config.put("StrictHostKeyChecking", "no");
+  
+  JSch jsch = new JSch();
+
+  // Configure la session avec les informations de base
+  // Le username, le host, et le port, puis le password
+  Session session = jsch.getSession("user", "host", 22);
+  session.setPassword("password");
+  session.setConfig(config);
+
+  // Specifie la duree de la session
+  session.setServerAliveInterval(3600000);
+  session.connect();
+
+  // Message de confirmation envoye sur la sortie standard
+  System.out.println( "Connecté à " + session.getHost() + 
+      " sous le port " + session.getPort() );
+\end{minted}
+
+\par Ce morceau de code, utilisé dans le programme, permet d'obtenir la session correspondant à une connexion active. De cette session, on peut obtenir un canal de transmission entre le \emph{shell} et l'interface java, ce qui permet de communiquer.
+
+\subsubsection{Utilisation d'un canal pour communiquer avec le \emph{shell} distant}
+\label{sec:util-dun-canal}
+
+\par En supposant acquise notre session, connectée à la machine distante dont le \emph{shell} nous intéresse, étudions le morceau de code suivant :
+
+\begin{minted}[frame=single,linenos,mathescape]{java}
+  channel = session.openChannel("shell");
+  
+  in = channel.getInputStream();
+  out = channel.getOutputStream();
+  
+  ((ChannelShell) channel).setPtyType("vt102");
+  channel.connect();
+\end{minted}
+
+\par Il existe plusieurs types d'objets \texttt{Channel}, les deux plus courants étant : \texttt{ChannelShell} et \texttt{ChannelExec}. Le premier type est destiné à une utilisation intéractive alors que le second prévoit plutôt une communication par batch. Notre but étant de pouvoir manipuler des noeuds de manière intéractive, nous nous intéresserons donc au premier type : \texttt{ChannelShell}. Un \texttt{Channel} est un canal, permettant donc la communication dans les deux sens, en supposant une session active (qui identifie l'utilisateur connecté au serveur). Sans cette session, permettant de garder active l'authentification, aucun canal ne peut exister.
+\par Le canal est principalement constitué de deux composantes, un \texttt{InputBuffer}, et un \texttt{OutputBuffer}. Il s'agit de deux boîtes aux lettres, une de réception (input) et une d'envoi (output) permettant d'envoyer et recevoir les données de la part du serveur (du \emph{shell} distant). 
+
+\subsubsection{Envoi d'une commande au \emph{shell} distant}
+\label{sec:envoi-dune-commande}
+
+\par Voyons donc comment communiquer avec ce \emph{shell} distant, à l'aide des buffers \texttt{in} et \texttt{out}. La fonction \texttt{sendCommand} permet d'envoyer une commande (à partir de sa chaîne de caractères) :
+
+\begin{minted}[frame=single,linenos,mathescape]{java}
+public void sendCommand(String command){
+  try {
+    out.write(command.getBytes());
+    out.write("\n".getBytes());
+    out.flush();
+  }
+  catch (Exception e) {
+    System.out.println("Error " + e.getMessage());
+    e.printStackTrace();
+  }
+}
+\end{minted}
+
+\par Une particularité des buffers est qu'ils ne traitent qu'avec des bytes. Notre commande étant une chaîne de caractères, on la transforme en bytes avant de la mettre dans le buffer d'envoi \texttt{out}.
+\par La méthode \texttt{readReceivedMessage()} permet de récupérer le contenu du buffer \texttt{in} sous forme de chaîne pour pouvoir l'afficher.
+
+\begin{minted}[frame=single,linenos,mathescape]{java}
+  public String readReceivedMessage (){
+    
+    String msg="";
+    
+    try {
+      
+      byte[] tmp=new byte[1024];
+      String tmp_str="";
+      
+      while(in.available() > 0){
+        int i= in.read(tmp, 0, 1024);
+        tmp_str = new String(tmp, 0, i);
+        msg+=tmp_str;
+        if(channel.isClosed()){
+          System.out.println("exit-status: "+channel.getExitStatus());
+          break;
+        }
+      }
+      System.out.print(msg);
+      
+    }
+    catch (Exception e) {
+      System.out.println("Error " + e.getMessage());
+      e.printStackTrace();
+    }
+    return msg;
+  }
+\end{minted}
+
+\par Globalement, la méthode \texttt{available} permet de tester s'il y a du contenu à récupérer dans le buffer, et tant que c'est le cas, on récupère ce contenu par paquets de 1024 bytes (octets) que l'on transforme en chaîne, puis que l'on concatène dans un accumulateur qu'on renvoie en toute fin de fonction.
+
+\par Le problème majeur de cette fonction est qu'elle peut vérifier un peu trop tôt le contenu du buffer de réception, et par conséquent "rater" l'affichage du message...
+
+\par En effet, ce système de buffer étant asynchrone, il faut un moyen répétitif pour vérifier leur contenu. Si le serveur met beaucoup de temps à répondre, le buffer mettra par conséquent beaucoup de temps à se remplir. Mais cette problématique ne concerne déjà plus \emph{JSch}.
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "CompteRendu"
+%%% End: 

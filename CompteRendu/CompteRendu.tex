@@ -1,10 +1,16 @@
 \include{styles}
-
+\usepackage{minted}
 \usepackage{verbatim}
 \usepackage{moreverb}
+
+\bibliography{bibliography}{}
+
 \let\verbatiminput=\verbatimtabinput
 \everymath{\displaystyle}
 \addtolength{\textheight}{1cm}
+
+\setlength{\cftsecnumwidth}{3em}
+\setlength{\cftsubsubsecnumwidth}{2em}
 
 \makeindex
 \begin{document}
@@ -24,23 +30,62 @@
 \null
 \newpage
 
+\listoffigures
+\listoftables
+\thispagestyle{empty}
+\newpage
+
+\thispagestyle{empty}
+\null
+\newpage
+
 % Introduction
-\include{partie1}
+\include{partie_introduction}
 
-% Logiques de description
-\include{partie2}
+% Description du projet
+\include{partie_description_projet}
 
-% Précisions sur le fonctionnement du logiciel Protégé
-\include{partie3}
+% Connaissances pour la suite et outils utilisés au cours du projet
+\include{partie_preliminaires}
 
-% Création d'une ontologie avec Protégé
-\include{partie4}
+% Dossier de spécification
+\include{partie_dossier_specification}
+
+% Plan de test
+\include{partie_plan_test}
+
+% Dossier de conception
+\include{partie_dossier_conception}
+
+% Vérification des tests
+\include{partie_test}
+
+% Dossier user guide
+\include{partie_user_guide}
 
 % Conclusion
-\include{partie5}
+\include{partie_conclusion}
 
-% \begin{figure}[h!]
-%   \centerline{ \includegraphics[width=18cm]{images/sequenceurgeneral.jpg}}
-%   \caption{Schéma général du chronomètre}
-% \end{figure}
+\nocite{github}
+\nocite{marseille-oar}
+\nocite{vialle:oar}
+\nocite{git:eclipse}
+\nocite{jsch:website}
+\nocite{ssh:connection}
+\nocite{run:shell:commands}
+\nocite{javadoc:jsch}
+\nocite{ssh:beanizer}
+\nocite{jsch:manual}
+\nocite{ssh:guide}
+\nocite{oar:userguide}
+\nocite{sdz:layout}
+\nocite{threads:developpez}
+\nocite{oar2}
+\nocite{git}
+\nocite{shell}
+
+\null
+\newpage
+\printbibliography
+
 \end{document}
